@@ -16,6 +16,7 @@
 [+] {printf("operator: + \n");}
 [-] {printf("operator: - \n");}
 [/] {printf("operator: / \n");}
+[=] {printf("operator: = \n");}
 
 [0-9] {printf("Intager: %s\n", yytext);}
 
@@ -33,7 +34,7 @@ int yywrap(void) {
 }
 
 int main(){
-    printf("Enter String: ");
+    printf("Enter String: \n");
     yylex();
 
     return 0;
