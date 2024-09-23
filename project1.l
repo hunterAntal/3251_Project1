@@ -11,6 +11,7 @@
 
 /* Rule section */
 %%
+"//".*  {/* Ignore single-line comments */}
 [*]       {printf("operator: * \n");}
 [+]       {printf("operator: + \n");}
 [-]       {printf("operator: - \n");}
@@ -19,6 +20,7 @@
 [<]       {printf("operator: < \n");}
 [>]       {printf("operator: > \n");}  /* Fix here */
 [0-9]+    {printf("Integer: %s\n", yytext);}  /* Fix for integers */
+
 \"(.*?)\" {strncpy(str, &(yytext[1]), strlen(yytext)-2);
 str[strlen(yytext)-2] = (char) 0;
 {printf("Quote: %s\n", str);}}
