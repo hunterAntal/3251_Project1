@@ -12,21 +12,18 @@
 
 /*Rule section*/
 %%
-[*]"\n"* {printf("operator: * \n");}
-[+]"\n"* {printf("operator: + \n");}
-[-]"\n"* {printf("operator: - \n");}
-[/]"\n"* {printf("operator: / \n");}
-[=]"\n"* {printf("operator: = \n");}
-
-[0-9]"\n"* {printf("Intager: %s\n", yytext);}
+[*]"\n" {printf("operator: * \n");}
+[+]"\n" {printf("operator: + \n");}
+[-]"\n" {printf("operator: - \n");}
+[/]"\n" {printf("operator: / \n");}
+[=]"\n" {printf("operator: = \n");}
+[<]"\n" {printf("operator: < \n");}
+[>]"\n" {printf("operator: < \n");}
+[0-9]"\n" {printf("Intager: %s\n", yytext);}
 
 \"(.*?)\" {strncpy(str, &(yytext[1]), strlen(yytext)-2);
 str[strlen(yytext)-2] = (char) 0;
 {printf("Quote: %s\n", str);}}
-
-. {printf("unknown char\n");}
-
-
 
 \n {return 0;}
 %%
