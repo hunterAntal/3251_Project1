@@ -11,3 +11,6 @@ print
 newline 
 id1 
 "hello, how are you?" 
+\"(.*?)\" {strncpy(str, &(yytext[1]), strlen(yytext)-2);
+str[strlen(yytext)-2] = (char) 0;
+{printf("Quote: %s\n", str);}}
