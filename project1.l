@@ -11,6 +11,7 @@
 
 /* Rule section */
 %%
+[\t]
 "//".*    {/* Ignore single-line comments */}
 [*]       {printf("operator: * \n");}
 [+]       {printf("operator: + \n");}
@@ -19,8 +20,8 @@
 [=]       {printf("operator: = \n");}
 [<]       {printf("operator: < \n");}
 [>]       {printf("operator: > \n");}  
-[(]       {printf("Parenthesis: %s", yytext);}
-[)]       {printf("Parenthesis: %s", yytext);}
+[(]       {printf("Parenthesis: %s\n", yytext);}
+[)]       {printf("Parenthesis: %s\n", yytext);}
 [0-9]+    {printf("Integer: %s\n", yytext);} 
 
 
@@ -37,8 +38,8 @@
 str[strlen(yytext)-2] = (char) 0;
 {printf("Quote: %s\n", str);}}
 
+\n        //{return 0;}
 . {printf("Input Not Reconized: %s \n", yytext);} /* Error handling*/
-\n        {return 0;}
 %%
 
 int yywrap(void) {

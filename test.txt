@@ -1,13 +1,13 @@
-+ 
-/ 
-= 
->= 
-3 
-( 
++
+/
+=
+>=
+3
+(
 ;
-if 
-then 
-print 
-newline 
-id1 
-"hello, how are you?" 
+if
+then
+print
+newline
+id1
+"hello, how are you?"
