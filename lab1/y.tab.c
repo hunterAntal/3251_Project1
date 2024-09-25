@@ -99,10 +99,7 @@ int yyerror(const char *s);
 #  endif
 # endif
 
-/* Use api.header.include to #include this header
-   instead of duplicating it here.  */
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -147,7 +144,7 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1105,17 +1102,17 @@ yyreduce:
   case 3: /* hi: HI  */
 #line 19 "hello.y"
                { printf("Hello World\n");   }
-#line 1109 "y.tab.c"
+#line 1106 "y.tab.c"
     break;
 
   case 4: /* bye: BYE  */
 #line 22 "hello.y"
                { printf("Bye World\n"); exit(0); }
-#line 1115 "y.tab.c"
+#line 1112 "y.tab.c"
     break;
 
 
-#line 1119 "y.tab.c"
+#line 1116 "y.tab.c"
 
       default: break;
     }
