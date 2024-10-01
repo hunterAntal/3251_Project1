@@ -7,16 +7,16 @@ int yyerror(const char *s);
 
 %}
 
-%token IF BYE
+%token HI BYE
 
 %%
 
 program: 
-         if bye
+         hi bye
         ;
 
-if:     
-        IF     { printf("Hello World\n");   }
+hi:     
+        HI     { printf("Hello World\n");   }
         ;
 bye:    
         BYE    { printf("Bye World\n"); exit(0); }

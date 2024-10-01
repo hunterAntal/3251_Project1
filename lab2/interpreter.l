@@ -25,9 +25,9 @@
 [)]       {printf("Parenthesis: %s\n", yytext);}
 [0-9]+    {printf("Integer: %s\n", yytext);} 
 
-
-"if"   {printf("Keyword: %s \n", yytext);}
-"then"  {printf("Keyword: %s \n", yytext);}
+"if"   {return IF;}
+"then"  {printf("Keyword: %s\n", yytext);}
+"bye"   {return BYE;}  // Corrected BYE token
 "else"  {printf("Keyword: %s \n", yytext);}
 "endif" {printf("Keyword: %s \n", yytext);}
 "print" {printf("Keyword: %s \n", yytext);}
@@ -35,21 +35,22 @@
 
 [a-zA-Z][a-zA-Z0-9]*   {printf("Identifier: %s\n", yytext);}
 
-\"(.*?)\" {strncpy(str, &(yytext[1]), strlen(yytext)-2);
-str[strlen(yytext)-2] = (char) 0;
-{printf("Quote: %s\n", str);}}
+\"(.*?)\" {
+    strncpy(str, &(yytext[1]), strlen(yytext)-2);
+    str[strlen(yytext)-2] = (char) 0;
+    {printf("Quote: %s\n", str);}
+}
 
-\n        //{return 0;}
-. {printf("Input Not Reconized: %s \n", yytext);} /* Error handling*/
+\n
+. {printf("Input Not Recognized: %s \n", yytext);} /* Error handling */
 %%
 
 int yywrap(void) {
-    return 0;
+    return 1;  // Return 1 to indicate end of input
 }
 
 int main(){
-    // printf("Enter String: \n");
-    yylex();
+    yyparse();  // Start parsing with yacc
     return 0;
 }
 
