@@ -471,7 +471,9 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "project1.l"
 #line 2 "project1.l"
-    /*This is Lab 1*/
+    /* This is Lab 1 */
+    /* Hunter Antal */
+    /* 1181729 */
     /* Definitions */
     #include "y.tab.h"
     #include <stdio.h>
@@ -480,9 +482,9 @@ char *yytext;
 
     int yyerror(char *errormsg);
     char str[1024];
-#line 484 "lex.yy.c"
-/* Rule section */
 #line 486 "lex.yy.c"
+/* Rule section */
+#line 488 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -699,9 +701,9 @@ YY_DECL
 		}
 
 	{
-#line 14 "project1.l"
+#line 16 "project1.l"
 
-#line 705 "lex.yy.c"
+#line 707 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -760,123 +762,123 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "project1.l"
+#line 17 "project1.l"
 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "project1.l"
+#line 18 "project1.l"
 {/* Ignore single-line comments */}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "project1.l"
-{printf("operator: * \n");}
+#line 19 "project1.l"
+{printf("operator: * \n");} /* Catch Operators */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "project1.l"
+#line 20 "project1.l"
 {printf("operator: + \n");}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "project1.l"
+#line 21 "project1.l"
 {printf("operator: - \n");}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "project1.l"
+#line 22 "project1.l"
 {printf("operator: / \n");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "project1.l"
+#line 23 "project1.l"
 {printf("operator: = \n");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "project1.l"
+#line 24 "project1.l"
 {printf("operator: < \n");}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "project1.l"
+#line 25 "project1.l"
 {printf("operator: > \n");}  
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "project1.l"
+#line 26 "project1.l"
 {printf("Parenthesis: %s\n", yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "project1.l"
+#line 27 "project1.l"
 {printf("Parenthesis: %s\n", yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "project1.l"
-{printf("Integer: %s\n", yytext);} 
+#line 28 "project1.l"
+{printf("Integer: %s\n", yytext);} /* Catch Numbers */
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 29 "project1.l"
-{printf("Keyword: %s \n", yytext);}
+#line 31 "project1.l"
+{printf("Keyword: %s \n", yytext);} /* Catch Keywords */
 	YY_BREAK
 case 14:
-YY_RULE_SETUP
-#line 30 "project1.l"
-{printf("Keyword: %s \n", yytext);}
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 31 "project1.l"
-{printf("Keyword: %s \n", yytext);}
-	YY_BREAK
-case 16:
 YY_RULE_SETUP
 #line 32 "project1.l"
 {printf("Keyword: %s \n", yytext);}
 	YY_BREAK
-case 17:
+case 15:
 YY_RULE_SETUP
 #line 33 "project1.l"
 {printf("Keyword: %s \n", yytext);}
 	YY_BREAK
-case 18:
+case 16:
 YY_RULE_SETUP
 #line 34 "project1.l"
 {printf("Keyword: %s \n", yytext);}
 	YY_BREAK
-case 19:
+case 17:
+YY_RULE_SETUP
+#line 35 "project1.l"
+{printf("Keyword: %s \n", yytext);}
+	YY_BREAK
+case 18:
 YY_RULE_SETUP
 #line 36 "project1.l"
-{printf("Identifier: %s\n", yytext);}
+{printf("Keyword: %s \n", yytext);}
+	YY_BREAK
+case 19:
+YY_RULE_SETUP
+#line 38 "project1.l"
+{printf("Identifier: %s\n", yytext);} /* Catch Identifiers */
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "project1.l"
-{strncpy(str, &(yytext[1]), strlen(yytext)-2);
+#line 40 "project1.l"
+{strncpy(str, &(yytext[1]), strlen(yytext)-2); /* Catch String an Remove Quotes */
 str[strlen(yytext)-2] = (char) 0;
 {printf("Quote: %s\n", str);}}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 42 "project1.l"
+#line 44 "project1.l"
 //{return 0;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "project1.l"
-{printf("Input Not Reconized: %s \n", yytext);} /* Error handling*/
+#line 45 "project1.l"
+{printf("Input Not Reconized: %s \n", yytext);} /* Error handling */
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "project1.l"
+#line 46 "project1.l"
 ECHO;
 	YY_BREAK
-#line 880 "lex.yy.c"
+#line 882 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1881,10 +1883,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 44 "project1.l"
+#line 46 "project1.l"
 
 
-int yywrap(void) {
+int yywrap(void) { /* Boiler Plate */
     return 0;
 }
 
@@ -1894,7 +1896,7 @@ int main(){
     return 0;
 }
 
-int yyerror(char *errormsg) {
+int yyerror(char *errormsg) { /* Error Handling */
     fprintf(stderr, "%s\n", errormsg);
     exit(1);
 }

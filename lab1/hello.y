@@ -1,3 +1,6 @@
+// Hunter Antal
+// 1181729
+// Lab 1
 %{
 
 #include <stdio.h>
