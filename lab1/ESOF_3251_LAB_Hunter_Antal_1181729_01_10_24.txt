@@ -1,0 +1,33 @@
+Hunter Antal
+1181729
+
+Input:
++
+/
+=
+>=
+3
+(
+;
+if
+then
+print
+newline
+id1
+"hello, how are you?"
+
+Output:
+operator: + 
+operator: / 
+operator: = 
+operator: > 
+operator: = 
+Integer: 3
+Parenthesis: (
+Input Not Reconized: ; 
+Keyword: if 
+Keyword: then 
+Keyword: print 
+Keyword: newline 
+Identifier: id1
+Quote: hello, how are you?

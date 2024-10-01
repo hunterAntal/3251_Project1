@@ -46,11 +46,11 @@ str[strlen(yytext)-2] = (char) 0;
 %%
 
 int yywrap(void) { /* Boiler Plate */
+    exit(0); // Makes the Program Exit Gracefully
     return 0;
 }
 
-int main(){
-    // printf("Enter String: \n");
+int main(){ // Main Function
     yylex();
     return 0;
 }
