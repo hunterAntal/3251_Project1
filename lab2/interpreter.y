@@ -31,6 +31,7 @@ statement:
     if_statement
     | print_statement
     | bye_statement
+    | newline
     ;
 
 if_statement:
@@ -40,6 +41,9 @@ if_statement:
 print_statement:
     PRINT STRING_LITERAL SEMICOLON { print_string($2); }
     ;
+newline:
+        NEWLINE { printf("Newline\n"); }
+        ;
 
 bye_statement:
     BYE { printf("Bye World\n"); exit(0); }

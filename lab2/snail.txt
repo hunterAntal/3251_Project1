@@ -2,6 +2,6 @@ if
 then
 else
 endif
-print
+print "Hello World";
 newline
 bye

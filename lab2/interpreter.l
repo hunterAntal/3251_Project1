@@ -11,7 +11,7 @@
 
 /* Rule section */
 %%
-[\t]
+[ \t]+     {/* Ignore whitespace and tabs*/}
 "//".*    {/* Ignore single-line comments */}
 [*]       {printf("operator: * \n");}
 [+]       {printf("operator: + \n");}
