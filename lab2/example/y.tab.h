@@ -54,8 +54,11 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    HI = 258,                      /* HI  */
-    BYE = 259                      /* BYE  */
+    PRINT = 258,                   /* PRINT  */
+    NEWLINE = 259,                 /* NEWLINE  */
+    STRING = 260,                  /* STRING  */
+    INT = 261,                     /* INT  */
+    UMINUS = 262                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -64,12 +67,25 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define HI 258
-#define BYE 259
+#define PRINT 258
+#define NEWLINE 259
+#define STRING 260
+#define INT 261
+#define UMINUS 262
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 15 "try3.y"
+
+  int int_val;
+  char *str_val;
+
+#line 86 "y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
