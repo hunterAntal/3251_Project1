@@ -1,40 +1,56 @@
 %{
-
 #include <stdio.h>
 #include <stdlib.h>
+
 extern int yylex();
 extern int yyparse();
 extern void yyerror(const char *s);
+
+void print_string(const char* str);  // Function to print strings
 %}
 
-%token IF BYE THEN ELSE ENDIF PRINT NEWLINE
+%union {
+    char* strval;  // To hold string literals
+}
+
+%token IF BYE THEN ELSE ENDIF PRINT NEWLINE SEMICOLON
+%token <strval> STRING_LITERAL  // Declare STRING_LITERAL as using the strval field in %union
 
 %%
 
-program: 
-         if then else endif print newline bye
-        ;
+program:
+    statements
+    ;
 
-if:     
-        IF     { printf("If\n");   }
-        ;
+statements:
+    statement statements
+    | /* empty */
+    ;
 
-then:
-        THEN   { printf("Then\n"); }
-        ;
-else:
-        ELSE   { printf("Else\n"); }
-        ;
-endif:  
-        ENDIF  { printf("Endif\n"); }
-        ;       
-print:
-        PRINT  { printf("Print\n"); }
-        ;
-newline:
-        NEWLINE { printf("Newline\n"); }
-        ;
-bye:    
-        BYE    { printf("Bye World\n"); exit(0); }
-         ;
-// This is a change
+statement:
+    if_statement
+    | print_statement
+    | bye_statement
+    ;
+
+if_statement:
+    IF THEN ELSE ENDIF { printf("If-Then-Else-Endif\n"); }
+    ;
+
+print_statement:
+    PRINT STRING_LITERAL SEMICOLON { print_string($2); }
+    ;
+
+bye_statement:
+    BYE { printf("Bye World\n"); exit(0); }
+    ;
+
+%%
+
+void print_string(const char* str) {
+    printf("%s\n", str);  // Output the string
+}
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}

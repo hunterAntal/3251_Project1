@@ -6,7 +6,6 @@
     #include <stdlib.h>
     #include <string.h>
 
-    int yyerror(char *errormsg);
     char str[1024];
 %}
 
@@ -38,8 +37,18 @@
 \"(.*?)\" {
     strncpy(str, &(yytext[1]), strlen(yytext)-2);
     str[strlen(yytext)-2] = (char) 0;
-    {printf("Quote: %s\n", str);}
+    /**
+     * Copies the given string `str` to `yylval.strVal` using `strdup`.
+     *
+     * This function duplicates the string `str` and assigns the duplicated
+     * string to the `strVal` member of the `yylval` union. The `strdup` 
+     * function allocates memory for the new string, which must be freed 
+     * later to avoid memory leaks.
+     */
+    yylval.strval = strdup(str);
+    return STRING_LITERAL;
 }
+";" {return SEMICOLON;}
 
 \n
 . {printf("Input Not Recognized: %s \n", yytext);} /* Error handling */
@@ -54,7 +63,3 @@ int main(){
     return 0;
 }
 
-int yyerror(char *errormsg) {
-    fprintf(stderr, "%s\n", errormsg);
-    exit(1);
-}

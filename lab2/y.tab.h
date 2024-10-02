@@ -60,7 +60,9 @@ extern int yydebug;
     ELSE = 261,                    /* ELSE  */
     ENDIF = 262,                   /* ENDIF  */
     PRINT = 263,                   /* PRINT  */
-    NEWLINE = 264                  /* NEWLINE  */
+    NEWLINE = 264,                 /* NEWLINE  */
+    SEMICOLON = 265,               /* SEMICOLON  */
+    STRING_LITERAL = 266           /* STRING_LITERAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,10 +78,21 @@ extern int yydebug;
 #define ENDIF 262
 #define PRINT 263
 #define NEWLINE 264
+#define SEMICOLON 265
+#define STRING_LITERAL 266
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 12 "interpreter.y"
+
+    char* strval;  // To hold string literals
+
+#line 93 "y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
