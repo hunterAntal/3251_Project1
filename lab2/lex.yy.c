@@ -830,7 +830,7 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 29 "interpreter.l"
-{printf("Keyword: %s\n", yytext);}
+{return THEN;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
@@ -840,22 +840,22 @@ YY_RULE_SETUP
 case 16:
 YY_RULE_SETUP
 #line 31 "interpreter.l"
-{printf("Keyword: %s \n", yytext);}
+{return ELSE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 32 "interpreter.l"
-{printf("Keyword: %s \n", yytext);}
+{return ENDIF;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 33 "interpreter.l"
-{printf("Keyword: %s \n", yytext);}
+{return PRINT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 34 "interpreter.l"
-{printf("Keyword: %s \n", yytext);}
+{return NEWLINE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

@@ -1,5 +1,7 @@
-+
--
-=
 if
+then
 else
+endif
+print
+newline
+bye

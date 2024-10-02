@@ -55,7 +55,12 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     IF = 258,                      /* IF  */
-    BYE = 259                      /* BYE  */
+    BYE = 259,                     /* BYE  */
+    THEN = 260,                    /* THEN  */
+    ELSE = 261,                    /* ELSE  */
+    ENDIF = 262,                   /* ENDIF  */
+    PRINT = 263,                   /* PRINT  */
+    NEWLINE = 264                  /* NEWLINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -66,6 +71,11 @@ extern int yydebug;
 #define YYUNDEF 257
 #define IF 258
 #define BYE 259
+#define THEN 260
+#define ELSE 261
+#define ENDIF 262
+#define PRINT 263
+#define NEWLINE 264
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
