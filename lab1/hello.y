@@ -1,6 +1,6 @@
-// Hunter Antal
-// 1181729
-// Lab 1
+/* Hunter Antal
+   1181729
+   Lab 1 */
 %{
 
 #include <stdio.h>
@@ -15,14 +15,13 @@ int yyerror(const char *s);
 %%
 
 program: 
-         hi bye
-        ;
-
-hi:     
-        HI     { printf("Hello World\n");   }
+        bye hi
         ;
 bye:    
         BYE    { printf("Bye World\n"); exit(0); }
          ;
-
-// This is a change
+hi:     
+        HI     { printf("Hello World\n");   }
+        ;
+%%
+/* This is a change */
