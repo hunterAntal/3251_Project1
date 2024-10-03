@@ -4,6 +4,36 @@
 #include <ctype.h>
 #include <string.h>
 
+#define STACK_SIZE 100
+int stack[STACK_SIZE];
+int top_index = -1;
+
+void push(int value) {
+    if (top_index < STACK_SIZE - 1) {
+        stack[++top_index] = value;
+    } else {
+        yyerror("Stack overflow");
+    }
+}
+
+int pop() {
+    if (top_index >= 0) {
+        return stack[top_index--];
+    } else {
+        yyerror("Stack underflow");
+        return -1;
+    }
+}
+
+int top() {
+    if (top_index >= 0) {
+        return stack[top_index];
+    } else {
+        yyerror("Stack is empty");
+        return -1;
+    }
+}
+
 extern int yylex();
 extern int yyparse();
 extern void yyerror(const char *s);
@@ -39,25 +69,24 @@ stmt_list :
     ;
 
 statement:
-    if_statement
+    if_stmt
     | print_statement
     | bye_statement
-    | newline
     | expr SEMICOLON   // End expressions with a semicolon
     ;
 
-if_statement:
-    IF THEN ELSE ENDIF { printf("If-Then-Else-Endif\n"); }
+if_stmt:  
+    IF expr THEN { top() == 1 ? push($2 != 0) : push(0); } stmt_list { pop(); } 
+    ELSE { top() == 1 ? push($2 == 0) : push(0); } stmt_list { pop(); } ENDIF
     ;
+
 
 print_statement:
     PRINT STRING_LITERAL SEMICOLON { print_string($2); }
     | PRINT expr SEMICOLON { printf("%d\n", $2); }
+    | PRINT NEWLINE SEMICOLON { printf("\n"); }
     ;
 
-newline:
-    NEWLINE { printf("Newline\n"); }
-    ;
 
 expr:
     expr PLUS expr       { $$ = $1 + $3; }
