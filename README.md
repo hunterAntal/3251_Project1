@@ -1,0 +1,1 @@
+This repositiory is for my class 3251 Compiler and Algorithum Design. The first 2 labs are using lex and yacc. you need to compile these files together using gcc. I am using Linux Mint for my environment. 
