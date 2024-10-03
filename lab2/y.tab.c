@@ -1265,7 +1265,7 @@ yyreduce:
 
   case 10: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
 #line 86 "interpreter.y"
-                                   { print_string((yyvsp[-1].strval)); }
+                                   { printf("%s\n",(yyvsp[-1].strval)); }
 #line 1270 "y.tab.c"
     break;
 
@@ -1556,9 +1556,9 @@ yyreturnlab:
 #line 111 "interpreter.y"
 
 
-void print_string(const char* str) {
+/* void print_string(const char* str) {
     printf("%s\n", str);  // Output the string
-}
+} */
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);

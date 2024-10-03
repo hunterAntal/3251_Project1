@@ -83,7 +83,7 @@ if_stmt:
 
 
 print_statement:
-    PRINT STRING_LITERAL SEMICOLON { print_string($2); }
+    PRINT STRING_LITERAL SEMICOLON { printf("%s\n",$2); }
     | PRINT expr SEMICOLON { printf("%d\n", $2); }
     | PRINT NEWLINE SEMICOLON { printf("\n"); }
     ;
@@ -110,9 +110,9 @@ bye_statement:
 
 %%
 
-void print_string(const char* str) {
+/* void print_string(const char* str) {
     printf("%s\n", str);  // Output the string
-}
+} */
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
