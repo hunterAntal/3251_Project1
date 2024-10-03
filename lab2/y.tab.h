@@ -62,7 +62,21 @@ extern int yydebug;
     PRINT = 263,                   /* PRINT  */
     NEWLINE = 264,                 /* NEWLINE  */
     SEMICOLON = 265,               /* SEMICOLON  */
-    STRING_LITERAL = 266           /* STRING_LITERAL  */
+    EQU = 266,                     /* EQU  */
+    LESSER = 267,                  /* LESSER  */
+    GREATER = 268,                 /* GREATER  */
+    LE = 269,                      /* LE  */
+    GE = 270,                      /* GE  */
+    NE = 271,                      /* NE  */
+    PLUS = 272,                    /* PLUS  */
+    MINUS = 273,                   /* MINUS  */
+    MULT = 274,                    /* MULT  */
+    DIV = 275,                     /* DIV  */
+    LPEREN = 276,                  /* LPEREN  */
+    RPEREN = 277,                  /* RPEREN  */
+    ASSIGN = 278,                  /* ASSIGN  */
+    STRING_LITERAL = 279,          /* STRING_LITERAL  */
+    INTEGER = 280                  /* INTEGER  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -79,17 +93,32 @@ extern int yydebug;
 #define PRINT 263
 #define NEWLINE 264
 #define SEMICOLON 265
-#define STRING_LITERAL 266
+#define EQU 266
+#define LESSER 267
+#define GREATER 268
+#define LE 269
+#define GE 270
+#define NE 271
+#define PLUS 272
+#define MINUS 273
+#define MULT 274
+#define DIV 275
+#define LPEREN 276
+#define RPEREN 277
+#define ASSIGN 278
+#define STRING_LITERAL 279
+#define INTEGER 280
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "interpreter.y"
+#line 14 "interpreter.y"
 
+    int int_val;
     char* strval;  // To hold string literals
 
-#line 93 "y.tab.h"
+#line 122 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,7 +1,3 @@
-if
-then
-else
-endif
 print "Hello World";
-newline
-bye
+print 10 + 20 * (10 < 3);
+bye;

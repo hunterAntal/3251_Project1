@@ -13,16 +13,20 @@
 %%
 [ \t]+     {/* Ignore whitespace and tabs*/}
 "//".*    {/* Ignore single-line comments */}
-[*]       {printf("operator: * \n");}
-[+]       {printf("operator: + \n");}
-[-]       {printf("operator: - \n");}
-[/]       {printf("operator: / \n");}
-[=]       {printf("operator: = \n");}
-[<]       {printf("operator: < \n");}
-[>]       {printf("operator: > \n");}  
-[(]       {printf("Parenthesis: %s\n", yytext);}
-[)]       {printf("Parenthesis: %s\n", yytext);}
-[0-9]+    {printf("Integer: %s\n", yytext);} 
+[*]       {return MULT;}
+[+]       {return PLUS;}
+[-]       {return MINUS;}
+[/]       {return DIV;}
+[=]       {return ASSIGN;}
+[<]       {return LESSER;}
+[>]       {return GREATER;}  
+[(]       {return LPEREN;}
+[)]       {return RPEREN;}
+"<="      { return LE; }
+">="      { return GE; }
+"=="      { return EQU; }
+"!="      { return NE; }
+[0-9]+    {yylval.int_val = atoi(yytext); return INTEGER;} 
 
 "if"   {return IF;}
 "then"  {return THEN;}
@@ -32,19 +36,9 @@
 "print" {return PRINT;}
 "newline" {return NEWLINE;}
 
-[a-zA-Z][a-zA-Z0-9]*   {printf("Identifier: %s\n", yytext);}
-
 \"(.*?)\" {
     strncpy(str, &(yytext[1]), strlen(yytext)-2);
     str[strlen(yytext)-2] = (char) 0;
-    /**
-     * Copies the given string `str` to `yylval.strVal` using `strdup`.
-     *
-     * This function duplicates the string `str` and assigns the duplicated
-     * string to the `strVal` member of the `yylval` union. The `strdup` 
-     * function allocates memory for the new string, which must be freed 
-     * later to avoid memory leaks.
-     */
     yylval.strval = strdup(str);
     return STRING_LITERAL;
 }

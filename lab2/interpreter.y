@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 extern int yylex();
 extern int yyparse();
@@ -10,20 +12,29 @@ void print_string(const char* str);  // Function to print strings
 %}
 
 %union {
+    int int_val;
     char* strval;  // To hold string literals
 }
 
 %token IF BYE THEN ELSE ENDIF PRINT NEWLINE SEMICOLON
+%token EQU LESSER GREATER LE GE NE 
+%token PLUS MINUS MULT DIV LPEREN RPEREN ASSIGN
 %token <strval> STRING_LITERAL  // Declare STRING_LITERAL as using the strval field in %union
+%type <int_val> expr
+%token <int_val> INTEGER
+
+%left PLUS MINUS   // Define operator precedence
+%left MULT DIV
+%nonassoc LESSER GREATER LE GE EQU NE  // Comparison operators are non-associative
 
 %%
 
 program:
-    statements
+    stmt_list 
     ;
 
-statements:
-    statement statements
+stmt_list :
+    statement stmt_list 
     | /* empty */
     ;
 
@@ -32,6 +43,7 @@ statement:
     | print_statement
     | bye_statement
     | newline
+    | expr SEMICOLON   // End expressions with a semicolon
     ;
 
 if_statement:
@@ -40,13 +52,30 @@ if_statement:
 
 print_statement:
     PRINT STRING_LITERAL SEMICOLON { print_string($2); }
+    | PRINT expr SEMICOLON { printf("%d\n", $2); }
     ;
+
 newline:
-        NEWLINE { printf("Newline\n"); }
-        ;
+    NEWLINE { printf("Newline\n"); }
+    ;
+
+expr:
+    expr PLUS expr       { $$ = $1 + $3; }
+    | expr MINUS expr    { $$ = $1 - $3; }
+    | expr MULT expr     { $$ = $1 * $3; }
+    | expr DIV expr      { $$ = $1 / $3; }
+    | expr LESSER expr   { $$ = ($1 < $3) ? 1 : 0; }
+    | expr GREATER expr  { $$ = ($1 > $3) ? 1 : 0; }
+    | expr LE expr       { $$ = ($1 <= $3) ? 1 : 0; }
+    | expr GE expr       { $$ = ($1 >= $3) ? 1 : 0; }
+    | expr EQU expr      { $$ = ($1 == $3) ? 1 : 0; }
+    | expr NE expr       { $$ = ($1 != $3) ? 1 : 0; }
+    | LPEREN expr RPEREN { $$ = $2; }   // Parentheses for grouping
+    | INTEGER            { $$ = $1; }   // Integer base case
+    ;
 
 bye_statement:
-    BYE { printf("Bye World\n"); exit(0); }
+    BYE SEMICOLON { printf("Bye World\n"); exit(0); }
     ;
 
 %%
