@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include <string.h>
 
+extern int yylex();
+extern int yyparse();
+extern void yyerror(const char *s);
+
 #define STACK_SIZE 100
 int stack[STACK_SIZE];
 int top_index = -1;
@@ -34,9 +38,6 @@ int top() {
     }
 }
 
-extern int yylex();
-extern int yyparse();
-extern void yyerror(const char *s);
 
 void print_string(const char* str);  // Function to print strings
 %}
@@ -72,12 +73,12 @@ statement:
     if_stmt
     | print_statement
     | bye_statement
-    | expr SEMICOLON   // End expressions with a semicolon
+    | expr
     ;
 
 if_stmt:  
-    IF expr THEN { top() == 1 ? push($2 != 0) : push(0); } stmt_list { pop(); } 
-    ELSE { top() == 1 ? push($2 == 0) : push(0); } stmt_list { pop(); } ENDIF
+    IF expr SEMICOLON {printf("Expr: %d\n", $2);}
+    //IF expr THEN { push($2 != 0); } stmt_list { pop(); } ELSE { push(top() == 0); } stmt_list { pop(); } ENDIF
     ;
 
 

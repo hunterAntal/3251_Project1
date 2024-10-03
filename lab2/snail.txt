@@ -1,5 +1,1 @@
-print "Hello World";
-print 10 + 20 * (10 < 3);
-print newline;
-if (2 > 1) then print "two is greater then one";
-bye;
+if 5 > 3;
