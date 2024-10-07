@@ -16,6 +16,7 @@ void push(int value){
     if(counter < StackSize){
         s[counter] = value;
         counter++;
+        printf("Pushed\n");
     }else{
         printf("Stack is full\n");
     }
@@ -23,6 +24,7 @@ void push(int value){
 
 int pop(){
     if(counter >=0){
+        printf("Pop\n");
         return s[counter--];
     }
     else {
@@ -33,6 +35,7 @@ int pop(){
 
 int top(){
     if(counter >=0){
+        printf("Top\n");
         return s[counter];
     }
     else {
@@ -80,19 +83,19 @@ statement:
     | expr
     ;
 
-if_stmt:  
-    IF expr THEN {top()==1 ? push($2!=0) : push(0);} stmt_list {pop();} 
-    ELSE {top()==1 ? push($2==0) : push(0);} stmt_list {pop();} ENDIF 
-
-    //IF expr THEN { push($2 != 0); } stmt_list { pop(); } ELSE { push(top() == 0); } stmt_list { pop(); } ENDIF
-    ;
-
-
 print_statement:
     PRINT STRING_LITERAL SEMICOLON {if(top() == 1) {printf("%s\n",$2);} }
     | PRINT expr SEMICOLON {if(top() == 1) {printf("%d\n", $2);} }
     | PRINT NEWLINE SEMICOLON {if(top() == 1) {printf("\n");} }
     ;
+
+if_stmt:  
+    IF expr THEN {top()==1 ? push($2!=0) : push(0); printf("Top after IF THEN: %d\n", counter);} stmt_list {pop();} 
+    ELSE {top()==1 ? push($2==0) : push(0);} stmt_list {pop();} ENDIF 
+    ;
+
+
+
 
 
 expr:
@@ -115,7 +118,6 @@ bye_statement:
     ;
 
 %%
-
 /* void print_string(const char* str) {
     printf("%s\n", str);  // Output the string
 } */

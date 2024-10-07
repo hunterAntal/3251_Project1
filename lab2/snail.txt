@@ -4,4 +4,4 @@ if (3 < 4) then
 else 
     print "Your interpreter is not working";
 endif
-
+bye;
