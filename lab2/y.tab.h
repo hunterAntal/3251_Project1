@@ -113,7 +113,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 52 "interpreter.y"
+#line 51 "interpreter.y"
 
     int int_val;
     char* strval;  // To hold string literals

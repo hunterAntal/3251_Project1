@@ -84,9 +84,10 @@ int counter = 0;
 
 void push(int value){
     if(counter < StackSize){
-        s[counter] = value;
         counter++;
-        printf("Pushed\n");
+        s[counter] = value;
+        printf("Pushed: %d at: %d\n", value, counter);
+        
     }else{
         printf("Stack is full\n");
     }
@@ -94,7 +95,6 @@ void push(int value){
 
 int pop(){
     if(counter >=0){
-        printf("Pop\n");
         return s[counter--];
     }
     else {
@@ -105,7 +105,6 @@ int pop(){
 
 int top(){
     if(counter >=0){
-        printf("Top\n");
         return s[counter];
     }
     else {
@@ -118,7 +117,7 @@ int top(){
 
 void print_string(const char* str);  // Function to print strings
 
-#line 122 "y.tab.c"
+#line 121 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -221,12 +220,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 52 "interpreter.y"
+#line 51 "interpreter.y"
 
     int int_val;
     char* strval;  // To hold string literals
 
-#line 230 "y.tab.c"
+#line 229 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -672,9 +671,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    71,    71,    75,    76,    80,    81,    82,    83,    87,
-      88,    89,    93,    93,    94,    94,    93,   102,   103,   104,
-     105,   106,   107,   108,   109,   110,   111,   112,   113,   117
+       0,    70,    70,    74,    75,    79,    80,    81,    82,    86,
+      87,    88,    92,    92,    93,    93,    92,   101,   102,   103,
+     104,   105,   106,   107,   108,   109,   110,   111,   112,   116
 };
 #endif
 
@@ -1276,127 +1275,127 @@ yyreduce:
   switch (yyn)
     {
   case 9: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
-#line 87 "interpreter.y"
+#line 86 "interpreter.y"
                                    {if(top() == 1) {printf("%s\n",(yyvsp[-1].strval));} }
-#line 1282 "y.tab.c"
+#line 1281 "y.tab.c"
     break;
 
   case 10: /* print_statement: PRINT expr SEMICOLON  */
-#line 88 "interpreter.y"
+#line 87 "interpreter.y"
                            {if(top() == 1) {printf("%d\n", (yyvsp[-1].int_val));} }
-#line 1288 "y.tab.c"
+#line 1287 "y.tab.c"
     break;
 
   case 11: /* print_statement: PRINT NEWLINE SEMICOLON  */
-#line 89 "interpreter.y"
+#line 88 "interpreter.y"
                               {if(top() == 1) {printf("\n");} }
-#line 1294 "y.tab.c"
+#line 1293 "y.tab.c"
     break;
 
   case 12: /* $@1: %empty  */
-#line 93 "interpreter.y"
-                 {top()==1 ? push((yyvsp[-1].int_val)!=0) : push(0); printf("Top after IF THEN: %d\n", counter);}
-#line 1300 "y.tab.c"
+#line 92 "interpreter.y"
+                 {top()==1 ? push((yyvsp[-1].int_val)!=0) : push(0);}
+#line 1299 "y.tab.c"
     break;
 
   case 13: /* $@2: %empty  */
-#line 93 "interpreter.y"
-                                                                                                           {pop();}
-#line 1306 "y.tab.c"
+#line 92 "interpreter.y"
+                                                               {pop();}
+#line 1305 "y.tab.c"
     break;
 
   case 14: /* $@3: %empty  */
-#line 94 "interpreter.y"
+#line 93 "interpreter.y"
          {top()==1 ? push((yyvsp[-5].int_val)==0) : push(0);}
-#line 1312 "y.tab.c"
+#line 1311 "y.tab.c"
     break;
 
   case 15: /* $@4: %empty  */
-#line 94 "interpreter.y"
+#line 93 "interpreter.y"
                                                        {pop();}
-#line 1318 "y.tab.c"
+#line 1317 "y.tab.c"
     break;
 
   case 17: /* expr: expr PLUS expr  */
-#line 102 "interpreter.y"
+#line 101 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
-#line 1324 "y.tab.c"
+#line 1323 "y.tab.c"
     break;
 
   case 18: /* expr: expr MINUS expr  */
-#line 103 "interpreter.y"
+#line 102 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
-#line 1330 "y.tab.c"
+#line 1329 "y.tab.c"
     break;
 
   case 19: /* expr: expr MULT expr  */
-#line 104 "interpreter.y"
+#line 103 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
-#line 1336 "y.tab.c"
+#line 1335 "y.tab.c"
     break;
 
   case 20: /* expr: expr DIV expr  */
-#line 105 "interpreter.y"
+#line 104 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
-#line 1342 "y.tab.c"
+#line 1341 "y.tab.c"
     break;
 
   case 21: /* expr: expr LESSER expr  */
-#line 106 "interpreter.y"
+#line 105 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1348 "y.tab.c"
+#line 1347 "y.tab.c"
     break;
 
   case 22: /* expr: expr GREATER expr  */
-#line 107 "interpreter.y"
+#line 106 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1354 "y.tab.c"
+#line 1353 "y.tab.c"
     break;
 
   case 23: /* expr: expr LE expr  */
-#line 108 "interpreter.y"
+#line 107 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1360 "y.tab.c"
+#line 1359 "y.tab.c"
     break;
 
   case 24: /* expr: expr GE expr  */
-#line 109 "interpreter.y"
+#line 108 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1366 "y.tab.c"
+#line 1365 "y.tab.c"
     break;
 
   case 25: /* expr: expr EQU expr  */
-#line 110 "interpreter.y"
+#line 109 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1372 "y.tab.c"
+#line 1371 "y.tab.c"
     break;
 
   case 26: /* expr: expr NE expr  */
-#line 111 "interpreter.y"
+#line 110 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1378 "y.tab.c"
+#line 1377 "y.tab.c"
     break;
 
   case 27: /* expr: LPEREN expr RPEREN  */
-#line 112 "interpreter.y"
+#line 111 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-1].int_val); }
-#line 1384 "y.tab.c"
+#line 1383 "y.tab.c"
     break;
 
   case 28: /* expr: INTEGER  */
-#line 113 "interpreter.y"
+#line 112 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[0].int_val); }
-#line 1390 "y.tab.c"
+#line 1389 "y.tab.c"
     break;
 
   case 29: /* bye_statement: BYE SEMICOLON  */
-#line 117 "interpreter.y"
+#line 116 "interpreter.y"
                   { printf("Bye World\n"); exit(0); }
-#line 1396 "y.tab.c"
+#line 1395 "y.tab.c"
     break;
 
 
-#line 1400 "y.tab.c"
+#line 1399 "y.tab.c"
 
       default: break;
     }
@@ -1589,7 +1588,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 120 "interpreter.y"
+#line 119 "interpreter.y"
 
 /* void print_string(const char* str) {
     printf("%s\n", str);  // Output the string

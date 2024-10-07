@@ -14,9 +14,10 @@ int counter = 0;
 
 void push(int value){
     if(counter < StackSize){
-        s[counter] = value;
         counter++;
-        printf("Pushed\n");
+        s[counter] = value;
+        printf("Pushed: %d at: %d\n", value, counter);
+        
     }else{
         printf("Stack is full\n");
     }
@@ -24,7 +25,6 @@ void push(int value){
 
 int pop(){
     if(counter >=0){
-        printf("Pop\n");
         return s[counter--];
     }
     else {
@@ -35,7 +35,6 @@ int pop(){
 
 int top(){
     if(counter >=0){
-        printf("Top\n");
         return s[counter];
     }
     else {
@@ -90,7 +89,7 @@ print_statement:
     ;
 
 if_stmt:  
-    IF expr THEN {top()==1 ? push($2!=0) : push(0); printf("Top after IF THEN: %d\n", counter);} stmt_list {pop();} 
+    IF expr THEN {top()==1 ? push($2!=0) : push(0);} stmt_list {pop();} 
     ELSE {top()==1 ? push($2==0) : push(0);} stmt_list {pop();} ENDIF 
     ;
 
