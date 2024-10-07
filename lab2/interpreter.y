@@ -8,35 +8,39 @@ extern int yylex();
 extern int yyparse();
 extern void yyerror(const char *s);
 
-#define STACK_SIZE 100
-int stack[STACK_SIZE];
-int top_index = -1;
+#define StackSize 10
+int s[StackSize] = {1,0,0,0,0,0,0,0,0,0};
+int counter = 0;
 
-void push(int value) {
-    if (top_index < STACK_SIZE - 1) {
-        stack[++top_index] = value;
-    } else {
-        yyerror("Stack overflow");
+void push(int value){
+    if(counter < StackSize){
+        s[counter] = value;
+        counter++;
+    }else{
+        printf("Stack is full\n");
     }
 }
 
-int pop() {
-    if (top_index >= 0) {
-        return stack[top_index--];
-    } else {
-        yyerror("Stack underflow");
+int pop(){
+    if(counter >=0){
+        return s[counter--];
+    }
+    else {
+        printf("Stack Empty\n");
         return -1;
     }
 }
 
-int top() {
-    if (top_index >= 0) {
-        return stack[top_index];
-    } else {
-        yyerror("Stack is empty");
+int top(){
+    if(counter >=0){
+        return s[counter];
+    }
+    else {
+        printf("Stack Empty\n");
         return -1;
     }
 }
+
 
 
 void print_string(const char* str);  // Function to print strings
@@ -77,15 +81,17 @@ statement:
     ;
 
 if_stmt:  
-    IF expr SEMICOLON {printf("Expr: %d\n", $2);}
+    IF expr THEN {top()==1 ? push($2!=0) : push(0);} stmt_list {pop();} 
+    ELSE {top()==1 ? push($2==0) : push(0);} stmt_list {pop();} ENDIF 
+
     //IF expr THEN { push($2 != 0); } stmt_list { pop(); } ELSE { push(top() == 0); } stmt_list { pop(); } ENDIF
     ;
 
 
 print_statement:
-    PRINT STRING_LITERAL SEMICOLON { printf("%s\n",$2); }
-    | PRINT expr SEMICOLON { printf("%d\n", $2); }
-    | PRINT NEWLINE SEMICOLON { printf("\n"); }
+    PRINT STRING_LITERAL SEMICOLON {if(top() == 1) {printf("%s\n",$2);} }
+    | PRINT expr SEMICOLON {if(top() == 1) {printf("%d\n", $2);} }
+    | PRINT NEWLINE SEMICOLON {if(top() == 1) {printf("\n");} }
     ;
 
 

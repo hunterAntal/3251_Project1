@@ -78,40 +78,44 @@ extern int yylex();
 extern int yyparse();
 extern void yyerror(const char *s);
 
-#define STACK_SIZE 100
-int stack[STACK_SIZE];
-int top_index = -1;
+#define StackSize 10
+int s[StackSize] = {1,0,0,0,0,0,0,0,0,0};
+int counter = 0;
 
-void push(int value) {
-    if (top_index < STACK_SIZE - 1) {
-        stack[++top_index] = value;
-    } else {
-        yyerror("Stack overflow");
+void push(int value){
+    if(counter < StackSize){
+        s[counter] = value;
+        counter++;
+    }else{
+        printf("Stack is full\n");
     }
 }
 
-int pop() {
-    if (top_index >= 0) {
-        return stack[top_index--];
-    } else {
-        yyerror("Stack underflow");
+int pop(){
+    if(counter >=0){
+        return s[counter--];
+    }
+    else {
+        printf("Stack Empty\n");
         return -1;
     }
 }
 
-int top() {
-    if (top_index >= 0) {
-        return stack[top_index];
-    } else {
-        yyerror("Stack is empty");
+int top(){
+    if(counter >=0){
+        return s[counter];
+    }
+    else {
+        printf("Stack Empty\n");
         return -1;
     }
 }
+
 
 
 void print_string(const char* str);  // Function to print strings
 
-#line 115 "y.tab.c"
+#line 119 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -214,12 +218,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 45 "interpreter.y"
+#line 49 "interpreter.y"
 
     int int_val;
     char* strval;  // To hold string literals
 
-#line 223 "y.tab.c"
+#line 227 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -270,9 +274,13 @@ enum yysymbol_kind_t
   YYSYMBOL_stmt_list = 28,                 /* stmt_list  */
   YYSYMBOL_statement = 29,                 /* statement  */
   YYSYMBOL_if_stmt = 30,                   /* if_stmt  */
-  YYSYMBOL_print_statement = 31,           /* print_statement  */
-  YYSYMBOL_expr = 32,                      /* expr  */
-  YYSYMBOL_bye_statement = 33              /* bye_statement  */
+  YYSYMBOL_31_1 = 31,                      /* $@1  */
+  YYSYMBOL_32_2 = 32,                      /* $@2  */
+  YYSYMBOL_33_3 = 33,                      /* $@3  */
+  YYSYMBOL_34_4 = 34,                      /* $@4  */
+  YYSYMBOL_print_statement = 35,           /* print_statement  */
+  YYSYMBOL_expr = 36,                      /* expr  */
+  YYSYMBOL_bye_statement = 37              /* bye_statement  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -600,16 +608,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   97
+#define YYLAST   103
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  26
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  8
+#define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  25
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  46
+#define YYNSTATES  54
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   280
@@ -661,9 +669,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    64,    64,    68,    69,    73,    74,    75,    76,    80,
-      86,    87,    88,    93,    94,    95,    96,    97,    98,    99,
-     100,   101,   102,   103,   104,   108
+       0,    68,    68,    72,    73,    77,    78,    79,    80,    84,
+      84,    85,    85,    84,    92,    93,    94,    99,   100,   101,
+     102,   103,   104,   105,   106,   107,   108,   109,   110,   114
 };
 #endif
 
@@ -683,8 +691,8 @@ static const char *const yytname[] =
   "ELSE", "ENDIF", "PRINT", "NEWLINE", "SEMICOLON", "EQU", "LESSER",
   "GREATER", "LE", "GE", "NE", "PLUS", "MINUS", "MULT", "DIV", "LPEREN",
   "RPEREN", "ASSIGN", "STRING_LITERAL", "INTEGER", "$accept", "program",
-  "stmt_list", "statement", "if_stmt", "print_statement", "expr",
-  "bye_statement", YY_NULLPTR
+  "stmt_list", "statement", "if_stmt", "$@1", "$@2", "$@3", "$@4",
+  "print_statement", "expr", "bye_statement", YY_NULLPTR
 };
 
 static const char *
@@ -694,7 +702,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-21)
+#define YYPACT_NINF (-20)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -708,11 +716,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       9,   -20,    -6,    22,   -20,   -21,    16,   -21,     9,   -21,
-     -21,    71,   -21,    50,   -21,     8,    23,    61,    37,   -21,
-     -21,   -20,   -20,   -20,   -20,   -20,   -20,   -20,   -20,   -20,
-     -20,   -21,   -21,   -21,   -21,   -21,    24,    24,    24,    24,
-      24,    24,    -5,    -5,    81,    81
+      10,   -19,    -5,    23,   -19,   -20,    17,   -20,    10,   -20,
+     -20,    71,   -20,    38,   -20,     9,    24,    61,    48,   -20,
+     -20,   -19,   -19,   -19,   -19,   -19,   -19,   -19,   -19,   -19,
+     -19,   -20,   -20,   -20,   -20,   -20,    81,    81,    81,    81,
+      81,    81,    -4,    -4,    87,    87,    10,   -20,    14,   -20,
+      10,   -20,    26,   -20
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -720,23 +729,26 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,     0,     0,     0,     0,    24,     0,     2,     4,     5,
-       6,     8,     7,     0,    25,     0,     0,     0,     0,     1,
+       4,     0,     0,     0,     0,    28,     0,     2,     4,     5,
+       6,     8,     7,     0,    29,     0,     0,     0,     0,     1,
        3,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     9,    12,    10,    11,    23,    21,    17,    18,    19,
-      20,    22,    13,    14,    15,    16
+       0,     9,    16,    14,    15,    27,    25,    21,    22,    23,
+      24,    26,    17,    18,    19,    20,     4,    10,     0,    11,
+       4,    12,     0,    13
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -21,   -21,    11,   -21,   -21,   -21,    -1,   -21
+     -20,   -20,    -8,   -20,   -20,   -20,   -20,   -20,   -20,   -20,
+       0,   -20
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     6,     7,     8,     9,    10,    11,    12
+       0,     6,     7,     8,     9,    46,    48,    50,    52,    10,
+      11,    12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -744,30 +756,32 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      13,     4,    17,    18,    14,     5,    21,    22,    23,    24,
-      25,    26,     1,     2,    29,    30,    19,     3,    32,    20,
-      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-       4,    15,     0,    33,     5,    -1,    -1,    -1,    -1,    -1,
-      -1,     0,     0,     4,     0,     0,    16,     5,    21,    22,
-      23,    24,    25,    26,    27,    28,    29,    30,     0,    35,
-      31,    21,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    34,    21,    22,    23,    24,    25,    26,    27,    28,
+      20,    13,     4,    17,    18,    14,     5,    21,    22,    23,
+      24,    25,    26,     1,     2,    29,    30,    19,     3,    32,
+      49,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,     4,    15,    53,    33,     5,     0,     0,    47,     0,
+       0,     0,    51,    31,     4,     0,     0,    16,     5,    21,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    21,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,     0,
+      35,    34,    21,    22,    23,    24,    25,    26,    27,    28,
       29,    30,    21,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    21,    22,    23,    24,    25,    26
+      29,    30,    -1,    -1,    -1,    -1,    -1,    -1,    21,    22,
+      23,    24,    25,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
-       1,    21,     3,     4,    10,    25,    11,    12,    13,    14,
-      15,    16,     3,     4,    19,    20,     0,     8,    10,     8,
-      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
-      21,     9,    -1,    10,    25,    11,    12,    13,    14,    15,
-      16,    -1,    -1,    21,    -1,    -1,    24,    25,    11,    12,
-      13,    14,    15,    16,    17,    18,    19,    20,    -1,    22,
-      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    10,    11,    12,    13,    14,    15,    16,    17,    18,
+       8,     1,    21,     3,     4,    10,    25,    11,    12,    13,
+      14,    15,    16,     3,     4,    19,    20,     0,     8,    10,
+       6,    21,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    21,     9,     7,    10,    25,    -1,    -1,    46,    -1,
+      -1,    -1,    50,     5,    21,    -1,    -1,    24,    25,    11,
+      12,    13,    14,    15,    16,    17,    18,    19,    20,    11,
+      12,    13,    14,    15,    16,    17,    18,    19,    20,    -1,
+      22,    10,    11,    12,    13,    14,    15,    16,    17,    18,
       19,    20,    11,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    11,    12,    13,    14,    15,    16
+      19,    20,    11,    12,    13,    14,    15,    16,    11,    12,
+      13,    14,    15,    16
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -775,26 +789,27 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     8,    21,    25,    27,    28,    29,    30,
-      31,    32,    33,    32,    10,     9,    24,    32,    32,     0,
+      35,    36,    37,    36,    10,     9,    24,    36,    36,     0,
       28,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    10,    10,    10,    10,    22,    32,    32,    32,    32,
-      32,    32,    32,    32,    32,    32
+      20,     5,    10,    10,    10,    22,    36,    36,    36,    36,
+      36,    36,    36,    36,    36,    36,    31,    28,    32,     6,
+      33,    28,    34,     7
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    26,    27,    28,    28,    29,    29,    29,    29,    30,
-      31,    31,    31,    32,    32,    32,    32,    32,    32,    32,
-      32,    32,    32,    32,    32,    33
+       0,    26,    27,    28,    28,    29,    29,    29,    29,    31,
+      32,    33,    34,    30,    35,    35,    35,    36,    36,    36,
+      36,    36,    36,    36,    36,    36,    36,    36,    36,    37
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     0,     1,     1,     1,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     1,     2
+       0,     2,     1,     2,     0,     1,     1,     1,     1,     0,
+       0,     0,     0,    11,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     1,     2
 };
 
 
@@ -1257,110 +1272,128 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 9: /* if_stmt: IF expr SEMICOLON  */
-#line 80 "interpreter.y"
-                      {printf("Expr: %d\n", (yyvsp[-1].int_val));}
-#line 1264 "y.tab.c"
+  case 9: /* $@1: %empty  */
+#line 84 "interpreter.y"
+                 {top()==1 ? push((yyvsp[-1].int_val)!=0) : push(0);}
+#line 1279 "y.tab.c"
     break;
 
-  case 10: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
-#line 86 "interpreter.y"
-                                   { printf("%s\n",(yyvsp[-1].strval)); }
-#line 1270 "y.tab.c"
+  case 10: /* $@2: %empty  */
+#line 84 "interpreter.y"
+                                                               {pop();}
+#line 1285 "y.tab.c"
     break;
 
-  case 11: /* print_statement: PRINT expr SEMICOLON  */
-#line 87 "interpreter.y"
-                           { printf("%d\n", (yyvsp[-1].int_val)); }
-#line 1276 "y.tab.c"
+  case 11: /* $@3: %empty  */
+#line 85 "interpreter.y"
+         {top()==1 ? push((yyvsp[-5].int_val)==0) : push(0);}
+#line 1291 "y.tab.c"
     break;
 
-  case 12: /* print_statement: PRINT NEWLINE SEMICOLON  */
-#line 88 "interpreter.y"
-                              { printf("\n"); }
-#line 1282 "y.tab.c"
+  case 12: /* $@4: %empty  */
+#line 85 "interpreter.y"
+                                                       {pop();}
+#line 1297 "y.tab.c"
     break;
 
-  case 13: /* expr: expr PLUS expr  */
+  case 14: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
+#line 92 "interpreter.y"
+                                   {if(top() == 1) {printf("%s\n",(yyvsp[-1].strval));} }
+#line 1303 "y.tab.c"
+    break;
+
+  case 15: /* print_statement: PRINT expr SEMICOLON  */
 #line 93 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
-#line 1288 "y.tab.c"
+                           {if(top() == 1) {printf("%d\n", (yyvsp[-1].int_val));} }
+#line 1309 "y.tab.c"
     break;
 
-  case 14: /* expr: expr MINUS expr  */
+  case 16: /* print_statement: PRINT NEWLINE SEMICOLON  */
 #line 94 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
-#line 1294 "y.tab.c"
+                              {if(top() == 1) {printf("\n");} }
+#line 1315 "y.tab.c"
     break;
 
-  case 15: /* expr: expr MULT expr  */
-#line 95 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
-#line 1300 "y.tab.c"
-    break;
-
-  case 16: /* expr: expr DIV expr  */
-#line 96 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
-#line 1306 "y.tab.c"
-    break;
-
-  case 17: /* expr: expr LESSER expr  */
-#line 97 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1312 "y.tab.c"
-    break;
-
-  case 18: /* expr: expr GREATER expr  */
-#line 98 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1318 "y.tab.c"
-    break;
-
-  case 19: /* expr: expr LE expr  */
+  case 17: /* expr: expr PLUS expr  */
 #line 99 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1324 "y.tab.c"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
+#line 1321 "y.tab.c"
     break;
 
-  case 20: /* expr: expr GE expr  */
+  case 18: /* expr: expr MINUS expr  */
 #line 100 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1330 "y.tab.c"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
+#line 1327 "y.tab.c"
     break;
 
-  case 21: /* expr: expr EQU expr  */
+  case 19: /* expr: expr MULT expr  */
 #line 101 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1336 "y.tab.c"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
+#line 1333 "y.tab.c"
     break;
 
-  case 22: /* expr: expr NE expr  */
+  case 20: /* expr: expr DIV expr  */
 #line 102 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1342 "y.tab.c"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
+#line 1339 "y.tab.c"
     break;
 
-  case 23: /* expr: LPEREN expr RPEREN  */
+  case 21: /* expr: expr LESSER expr  */
 #line 103 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-1].int_val); }
-#line 1348 "y.tab.c"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1345 "y.tab.c"
     break;
 
-  case 24: /* expr: INTEGER  */
+  case 22: /* expr: expr GREATER expr  */
 #line 104 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[0].int_val); }
-#line 1354 "y.tab.c"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1351 "y.tab.c"
     break;
 
-  case 25: /* bye_statement: BYE SEMICOLON  */
+  case 23: /* expr: expr LE expr  */
+#line 105 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1357 "y.tab.c"
+    break;
+
+  case 24: /* expr: expr GE expr  */
+#line 106 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1363 "y.tab.c"
+    break;
+
+  case 25: /* expr: expr EQU expr  */
+#line 107 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1369 "y.tab.c"
+    break;
+
+  case 26: /* expr: expr NE expr  */
 #line 108 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1375 "y.tab.c"
+    break;
+
+  case 27: /* expr: LPEREN expr RPEREN  */
+#line 109 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-1].int_val); }
+#line 1381 "y.tab.c"
+    break;
+
+  case 28: /* expr: INTEGER  */
+#line 110 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[0].int_val); }
+#line 1387 "y.tab.c"
+    break;
+
+  case 29: /* bye_statement: BYE SEMICOLON  */
+#line 114 "interpreter.y"
                   { printf("Bye World\n"); exit(0); }
-#line 1360 "y.tab.c"
+#line 1393 "y.tab.c"
     break;
 
 
-#line 1364 "y.tab.c"
+#line 1397 "y.tab.c"
 
       default: break;
     }
@@ -1553,7 +1586,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 111 "interpreter.y"
+#line 117 "interpreter.y"
 
 
 /* void print_string(const char* str) {

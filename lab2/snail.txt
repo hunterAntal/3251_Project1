@@ -1,2 +1,7 @@
-print "Hello World sfdbdfbdfsbdsfbsdfb";
-print 10 + 10;
+print "Start of Program"; print newline;
+if (3 < 4) then 
+    print "3 is smaller then 4"; print newline;
+else 
+    print "Your interpreter is not working";
+endif
+
