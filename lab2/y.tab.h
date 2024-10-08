@@ -113,10 +113,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 51 "interpreter.y"
+#line 53 "interpreter.y"
 
-    int int_val;
-    char* strval;  // To hold string literals
+    int int_val;   // To store integer values
+    char* strval;  // To store string literals
 
 #line 122 "y.tab.h"
 
