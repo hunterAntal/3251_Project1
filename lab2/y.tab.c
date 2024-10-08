@@ -114,11 +114,9 @@ int top(){
         return -1;
     }
 }
+ 
 
-// Prototype for a function to print strings
-void print_string(const char* str);  
-
-#line 122 "y.tab.c"
+#line 120 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -221,12 +219,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 53 "interpreter.y"
+#line 51 "interpreter.y"
 
     int int_val;   // To store integer values
     char* strval;  // To store string literals
 
-#line 230 "y.tab.c"
+#line 228 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -672,9 +670,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    75,    75,    79,    80,    84,    85,    86,    87,    92,
-      93,    94,    99,    99,   100,   100,    99,   105,   106,   107,
-     108,   109,   110,   111,   112,   113,   114,   115,   116,   121
+       0,    73,    73,    77,    78,    82,    83,    84,    85,    90,
+      91,    92,    97,    97,    98,    98,    97,   103,   104,   105,
+     106,   107,   108,   109,   110,   111,   112,   113,   114,   119
 };
 #endif
 
@@ -1276,127 +1274,127 @@ yyreduce:
   switch (yyn)
     {
   case 9: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
-#line 92 "interpreter.y"
+#line 90 "interpreter.y"
                                    {if(top() == 1) {printf("%s",(yyvsp[-1].strval));} }
-#line 1282 "y.tab.c"
+#line 1280 "y.tab.c"
     break;
 
   case 10: /* print_statement: PRINT expr SEMICOLON  */
-#line 93 "interpreter.y"
+#line 91 "interpreter.y"
                            {if(top() == 1) {printf("%d", (yyvsp[-1].int_val));} }
-#line 1288 "y.tab.c"
+#line 1286 "y.tab.c"
     break;
 
   case 11: /* print_statement: PRINT NEWLINE SEMICOLON  */
-#line 94 "interpreter.y"
+#line 92 "interpreter.y"
                               {if(top() == 1) {printf("\n");} }
-#line 1294 "y.tab.c"
+#line 1292 "y.tab.c"
     break;
 
   case 12: /* $@1: %empty  */
-#line 99 "interpreter.y"
+#line 97 "interpreter.y"
                  {top()==1 ? push((yyvsp[-1].int_val)!=0) : push(0);}
-#line 1300 "y.tab.c"
+#line 1298 "y.tab.c"
     break;
 
   case 13: /* $@2: %empty  */
-#line 99 "interpreter.y"
+#line 97 "interpreter.y"
                                                                {pop();}
-#line 1306 "y.tab.c"
+#line 1304 "y.tab.c"
     break;
 
   case 14: /* $@3: %empty  */
-#line 100 "interpreter.y"
+#line 98 "interpreter.y"
          {top()==1 ? push((yyvsp[-5].int_val)==0) : push(0);}
-#line 1312 "y.tab.c"
+#line 1310 "y.tab.c"
     break;
 
   case 15: /* $@4: %empty  */
-#line 100 "interpreter.y"
+#line 98 "interpreter.y"
                                                        {pop();}
-#line 1318 "y.tab.c"
+#line 1316 "y.tab.c"
     break;
 
   case 17: /* expr: expr PLUS expr  */
-#line 105 "interpreter.y"
+#line 103 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
-#line 1324 "y.tab.c"
+#line 1322 "y.tab.c"
     break;
 
   case 18: /* expr: expr MINUS expr  */
-#line 106 "interpreter.y"
+#line 104 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
-#line 1330 "y.tab.c"
+#line 1328 "y.tab.c"
     break;
 
   case 19: /* expr: expr MULT expr  */
-#line 107 "interpreter.y"
+#line 105 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
-#line 1336 "y.tab.c"
+#line 1334 "y.tab.c"
     break;
 
   case 20: /* expr: expr DIV expr  */
-#line 108 "interpreter.y"
+#line 106 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
-#line 1342 "y.tab.c"
+#line 1340 "y.tab.c"
     break;
 
   case 21: /* expr: expr LESSER expr  */
-#line 109 "interpreter.y"
+#line 107 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1348 "y.tab.c"
+#line 1346 "y.tab.c"
     break;
 
   case 22: /* expr: expr GREATER expr  */
-#line 110 "interpreter.y"
+#line 108 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1354 "y.tab.c"
+#line 1352 "y.tab.c"
     break;
 
   case 23: /* expr: expr LE expr  */
-#line 111 "interpreter.y"
+#line 109 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1360 "y.tab.c"
+#line 1358 "y.tab.c"
     break;
 
   case 24: /* expr: expr GE expr  */
-#line 112 "interpreter.y"
+#line 110 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1366 "y.tab.c"
+#line 1364 "y.tab.c"
     break;
 
   case 25: /* expr: expr EQU expr  */
-#line 113 "interpreter.y"
+#line 111 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1372 "y.tab.c"
+#line 1370 "y.tab.c"
     break;
 
   case 26: /* expr: expr NE expr  */
-#line 114 "interpreter.y"
+#line 112 "interpreter.y"
                          { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1378 "y.tab.c"
+#line 1376 "y.tab.c"
     break;
 
   case 27: /* expr: LPEREN expr RPEREN  */
-#line 115 "interpreter.y"
+#line 113 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[-1].int_val); }
-#line 1384 "y.tab.c"
+#line 1382 "y.tab.c"
     break;
 
   case 28: /* expr: INTEGER  */
-#line 116 "interpreter.y"
+#line 114 "interpreter.y"
                          { (yyval.int_val) = (yyvsp[0].int_val); }
-#line 1390 "y.tab.c"
+#line 1388 "y.tab.c"
     break;
 
   case 29: /* bye_statement: BYE SEMICOLON  */
-#line 121 "interpreter.y"
-                  { printf("Bye World\n"); exit(0); }
-#line 1396 "y.tab.c"
+#line 119 "interpreter.y"
+                  { printf("Good Bye Crule World\n"); exit(0); }
+#line 1394 "y.tab.c"
     break;
 
 
-#line 1400 "y.tab.c"
+#line 1398 "y.tab.c"
 
       default: break;
     }
@@ -1589,7 +1587,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 124 "interpreter.y"
+#line 122 "interpreter.y"
 
 
 // Error handling function

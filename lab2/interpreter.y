@@ -44,9 +44,7 @@ int top(){
         return -1;
     }
 }
-
-// Prototype for a function to print strings
-void print_string(const char* str);  
+ 
 %}
 
 // Define the types of data that can be used in the parser
@@ -118,7 +116,7 @@ expr:
 
 // Grammar rule for exiting the program
 bye_statement:
-    BYE SEMICOLON { printf("Bye World\n"); exit(0); }  // Exit the program with a goodbye message
+    BYE SEMICOLON { printf("Good Bye Crule World\n"); exit(0); }  // Exit the program with a goodbye message
     ;
 
 %%

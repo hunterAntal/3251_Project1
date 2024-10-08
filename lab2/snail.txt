@@ -1,4 +1,22 @@
 print "Start of Program"; print newline;
+
+// Arithmetic Operations
+print 1 + 1; print newline;
+print 1 + 2; print newline;
+print 3 - 1; print newline;
+print 4 * 2; print newline;
+print 8 / 2; print newline;
+
+// Comparison operations
+print (1 < 2); print newline;
+
+print (3 > 1); print newline;
+print (4 <= 4); print newline;
+print (5 >= 3); print newline;
+print (6 == 6); print newline;
+print (7 != 8); print newline;
+
+// If statement
 if (3 < 4) then 
     print "3 is smaller then 4"; print newline;
 else 
@@ -6,4 +24,6 @@ else
 endif
 print "This works!!!!"; print newline;
 print "The sum of 4 + 5 is: "; print (4+5); print newline;
+
+// Exit the program
 bye;
