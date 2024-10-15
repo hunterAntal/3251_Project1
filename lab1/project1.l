@@ -41,6 +41,8 @@
 str[strlen(yytext)-2] = (char) 0;
 {printf("Quote: %s\n", str);}}
 
+";" {printf("Semicolon\n");} /* Catch Semicolon */
+
 \n        //{return 0;}
 . {printf("Input Not Reconized: %s \n", yytext);} /* Error handling */
 %%
