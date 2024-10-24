@@ -11,20 +11,31 @@
 
 /* Rule section */
 %%
-[ \t]+     {/* Ignore whitespace and tabs */}
+[ \t]+     {/* Ignore whitespace and tabs*/}
 "//".*    {/* Ignore single-line comments */}
-[*]       { return MULT; }
-[+]       { return PLUS; }
-[-]       { return MINUS; }
-[/]       { return DIV; }
-[=]       { return ASSIGN; }
-[<]       { return LESSER; }
-[>]       { return GREATER; }  
+[*]       {return MULT;}
+[+]       {return PLUS;}
+[-]       {return MINUS;}
+[/]       {return DIV;}
+[=]       {return ASSIGN;}
+[<]       {return LESSER;}
+[>]       {return GREATER;}  
+[(]       {return LPEREN;}
+[)]       {return RPEREN;}
 "<="      { return LE; }
 ">="      { return GE; }
 "=="      { return EQU; }
 "!="      { return NE; }
-[0-9]+    { yylval.int_val = atoi(yytext); return INTEGER; }  // Recognize integers
+[0-9]+    {yylval.int_val = atoi(yytext); return INTEGER;} 
+
+"if"   {return IF;}
+"then"  {return THEN;}
+"bye"   {return BYE;}  // Corrected BYE token
+"else"  {return ELSE;}
+"endif" {return ENDIF;}
+"print" {return PRINT;}
+"newline" {return NEWLINE;}
+
 
 [a-zA-Z_][a-zA-Z0-9_]*   { yylval.strval = strdup(yytext); return ID; }  // Recognize identifiers (variable names)
 
@@ -37,11 +48,9 @@
 
 ";" { return SEMICOLON; }
 
-
 \n           { /* Do nothing, handle newlines */ }
 
-.            { printf("Input Not Recognized: %s\n", yytext); } // Print an error message for unrecognized input
-
+.            { printf("Input Not Recognized: %s\n", yytext); }
 %%
 
 int yywrap(void) {
