@@ -13,6 +13,7 @@
 %%
 [ \t]+     {/* Ignore whitespace and tabs*/}
 "//".*    {/* Ignore single-line comments */}
+[a-zA-Z_][a-zA-Z0-9_]*   { yylval.strval = strdup(yytext); return ID; }  // Recognize identifiers (variable names)
 [*]       {return MULT;}
 [+]       {return PLUS;}
 [-]       {return MINUS;}
