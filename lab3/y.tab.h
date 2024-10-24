@@ -54,29 +54,30 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    BYE = 259,                     /* BYE  */
-    THEN = 260,                    /* THEN  */
-    ELSE = 261,                    /* ELSE  */
-    ENDIF = 262,                   /* ENDIF  */
-    PRINT = 263,                   /* PRINT  */
-    NEWLINE = 264,                 /* NEWLINE  */
-    SEMICOLON = 265,               /* SEMICOLON  */
-    EQU = 266,                     /* EQU  */
-    LESSER = 267,                  /* LESSER  */
-    GREATER = 268,                 /* GREATER  */
-    LE = 269,                      /* LE  */
-    GE = 270,                      /* GE  */
-    NE = 271,                      /* NE  */
-    PLUS = 272,                    /* PLUS  */
-    MINUS = 273,                   /* MINUS  */
-    MULT = 274,                    /* MULT  */
-    DIV = 275,                     /* DIV  */
-    LPEREN = 276,                  /* LPEREN  */
-    RPEREN = 277,                  /* RPEREN  */
-    ASSIGN = 278,                  /* ASSIGN  */
-    STRING_LITERAL = 279,          /* STRING_LITERAL  */
-    INTEGER = 280                  /* INTEGER  */
+    STRING_LITERAL = 258,          /* STRING_LITERAL  */
+    IF = 259,                      /* IF  */
+    BYE = 260,                     /* BYE  */
+    THEN = 261,                    /* THEN  */
+    ELSE = 262,                    /* ELSE  */
+    ENDIF = 263,                   /* ENDIF  */
+    PRINT = 264,                   /* PRINT  */
+    NEWLINE = 265,                 /* NEWLINE  */
+    SEMICOLON = 266,               /* SEMICOLON  */
+    EQU = 267,                     /* EQU  */
+    LESSER = 268,                  /* LESSER  */
+    GREATER = 269,                 /* GREATER  */
+    LE = 270,                      /* LE  */
+    GE = 271,                      /* GE  */
+    NE = 272,                      /* NE  */
+    PLUS = 273,                    /* PLUS  */
+    MINUS = 274,                   /* MINUS  */
+    MULT = 275,                    /* MULT  */
+    DIV = 276,                     /* DIV  */
+    LPEREN = 277,                  /* LPEREN  */
+    RPEREN = 278,                  /* RPEREN  */
+    ASSIGN = 279,                  /* ASSIGN  */
+    ID = 280,                      /* ID  */
+    INTEGER = 281                  /* INTEGER  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -85,40 +86,41 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define IF 258
-#define BYE 259
-#define THEN 260
-#define ELSE 261
-#define ENDIF 262
-#define PRINT 263
-#define NEWLINE 264
-#define SEMICOLON 265
-#define EQU 266
-#define LESSER 267
-#define GREATER 268
-#define LE 269
-#define GE 270
-#define NE 271
-#define PLUS 272
-#define MINUS 273
-#define MULT 274
-#define DIV 275
-#define LPEREN 276
-#define RPEREN 277
-#define ASSIGN 278
-#define STRING_LITERAL 279
-#define INTEGER 280
+#define STRING_LITERAL 258
+#define IF 259
+#define BYE 260
+#define THEN 261
+#define ELSE 262
+#define ENDIF 263
+#define PRINT 264
+#define NEWLINE 265
+#define SEMICOLON 266
+#define EQU 267
+#define LESSER 268
+#define GREATER 269
+#define LE 270
+#define GE 271
+#define NE 272
+#define PLUS 273
+#define MINUS 274
+#define MULT 275
+#define DIV 276
+#define LPEREN 277
+#define RPEREN 278
+#define ASSIGN 279
+#define ID 280
+#define INTEGER 281
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 51 "interpreter.y"
+#line 17 "interpreter.y"
 
-    int int_val;   // To store integer values
-    char* strval;  // To store string literals
+    int int_val;
+    char* strval;
 
-#line 122 "y.tab.h"
+#line 124 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

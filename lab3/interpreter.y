@@ -19,6 +19,7 @@ std::map<std::string, int> symbol_table;  // Symbol table to store variables
     char* strval;
 }
 
+%token <strval> STRING_LITERAL
 %token IF BYE THEN ELSE ENDIF PRINT NEWLINE SEMICOLON
 %token EQU LESSER GREATER LE GE NE
 %token PLUS MINUS MULT DIV LPEREN RPEREN ASSIGN
