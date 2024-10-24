@@ -76,7 +76,8 @@ extern int yydebug;
     RPEREN = 277,                  /* RPEREN  */
     ASSIGN = 278,                  /* ASSIGN  */
     STRING_LITERAL = 279,          /* STRING_LITERAL  */
-    INTEGER = 280                  /* INTEGER  */
+    INTEGER = 280,                 /* INTEGER  */
+    ID = 281                       /* ID  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -108,17 +109,19 @@ extern int yydebug;
 #define ASSIGN 278
 #define STRING_LITERAL 279
 #define INTEGER 280
+#define ID 281
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 51 "interpreter.y"
+#line 11 "interpreter.y"
 
-    int int_val;   // To store integer values
-    char* strval;  // To store string literals
+    int int_val;       // For integer values
+    char* strval;      // For string literals
+    int sym_index;     // For symbol table indices
 
-#line 122 "y.tab.h"
+#line 125 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

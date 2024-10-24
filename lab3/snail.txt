@@ -16,6 +16,15 @@ print (5 >= 3); print newline;
 print (6 == 6); print newline;
 print (7 != 8); print newline;
 
+// Assignment
+x = 10;
+y = x * 2;
+print y; print newline;
+i = 10;
+j = 5;
+k = i/j;
+print k; print newline;
+
 // If statement
 if (3 < 4) then 
     print "3 is smaller then 4"; print newline;
