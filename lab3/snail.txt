@@ -7,22 +7,32 @@ print 3 - 1; print newline;
 print 4 * 2; print newline;
 print 8 / 2; print newline;
 
+// Variable assignments and expressions
+var1 = 10; print var1; print newline;  // Assign 10 to var1 and print it
+var2 = 20; print var2; print newline;  // Assign 20 to var2 and print it
+
+sum = var1 + var2;  // Assign the sum of var1 and var2
+print "The sum of var1 and var2 is: "; print sum; print newline;
+
 // Comparison operations
 print (1 < 2); print newline;
-
 print (3 > 1); print newline;
 print (4 <= 4); print newline;
 print (5 >= 3); print newline;
 print (6 == 6); print newline;
 print (7 != 8); print newline;
 
-// If statement
-if (3 < 4) then 
-    print "3 is smaller then 4"; print newline;
+// Using variables in comparisons
+print (var1 < var2); print newline;  // Should print 1 (true)
+print (var1 == var2); print newline;  // Should print 0 (false)
+
+// If statement using variables
+if (var1 < var2) then 
+    print "var1 is smaller than var2"; print newline;
 else 
     print "Your interpreter is not working"; print newline;
 endif
-print "This works!!!!"; print newline;
+
 print "The sum of 4 + 5 is: "; print (4+5); print newline;
 
 // Exit the program

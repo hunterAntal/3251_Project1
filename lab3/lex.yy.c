@@ -351,8 +351,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 19
-#define YY_END_OF_BUFFER 20
+#define YY_NUM_RULES 20
+#define YY_END_OF_BUFFER 21
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -362,7 +362,7 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[31] =
     {   0,
-        0,    0,   20,   19,    1,   18,   19,   19,    3,    4,
+        0,    0,   21,   19,    1,   18,   19,   19,    3,    4,
         5,    6,   14,   17,    8,    7,    9,   15,    1,   13,
         0,   16,    2,   14,   10,   12,   11,   15,    2,    0
     } ;
@@ -462,7 +462,7 @@ char *yytext;
     #include <stdlib.h>
     #include <string.h>
 
-    char str[1024];
+    char str[1024];  // Buffer to store strings without quotes
 #line 467 "lex.yy.c"
 /* Rule section */
 #line 469 "lex.yy.c"
@@ -744,7 +744,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 14 "interpreter.l"
-{/* Ignore whitespace and tabs*/}
+{/* Ignore whitespace and tabs */}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -754,37 +754,37 @@ YY_RULE_SETUP
 case 3:
 YY_RULE_SETUP
 #line 16 "interpreter.l"
-{return MULT;}
+{ return MULT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 17 "interpreter.l"
-{return PLUS;}
+{ return PLUS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 18 "interpreter.l"
-{return MINUS;}
+{ return MINUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 19 "interpreter.l"
-{return DIV;}
+{ return DIV; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 20 "interpreter.l"
-{return ASSIGN;}
+{ return ASSIGN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 21 "interpreter.l"
-{return LESSER;}
+{ return LESSER; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 22 "interpreter.l"
-{return GREATER;}  
+{ return GREATER; }  
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
@@ -809,7 +809,7 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 27 "interpreter.l"
-{yylval.int_val = atoi(yytext); return INTEGER;} 
+{ yylval.int_val = atoi(yytext); return INTEGER; }  // Recognize integers
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
@@ -820,29 +820,34 @@ case 16:
 YY_RULE_SETUP
 #line 31 "interpreter.l"
 {
-    strncpy(str, &(yytext[1]), strlen(yytext)-2);
-    str[strlen(yytext)-2] = (char) 0;
-    yylval.strval = strdup(str);
+    strncpy(str, &(yytext[1]), strlen(yytext)-2);  // Remove quotes from the string
+    str[strlen(yytext)-2] = '\0';  // Null-terminate the string
+    yylval.strval = strdup(str);  // Copy the string into yylval
     return STRING_LITERAL;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 37 "interpreter.l"
-{return SEMICOLON;}
+#line 38 "interpreter.l"
+{ return SEMICOLON; }
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 38 "interpreter.l"
-. {printf("Input Not Recognized: %s\n", yytext);} /* Error handling */
+#line 41 "interpreter.l"
+{ /* Do nothing, handle newlines */ }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 39 "interpreter.l"
+#line 43 "interpreter.l"
+{ printf("Input Not Recognized: %s\n", yytext); } // Print an error message for unrecognized input
+	YY_BREAK
+case 20:
+YY_RULE_SETUP
+#line 45 "interpreter.l"
 ECHO;
 	YY_BREAK
-#line 846 "lex.yy.c"
+#line 851 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1847,7 +1852,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 39 "interpreter.l"
+#line 45 "interpreter.l"
 
 
 int yywrap(void) {
@@ -1858,5 +1863,4 @@ int main(){
     yyparse();  // Start parsing with yacc
     return 0;
 }
-
 

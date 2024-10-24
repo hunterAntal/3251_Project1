@@ -6,36 +6,42 @@
     #include <stdlib.h>
     #include <string.h>
 
-    char str[1024];
+    char str[1024];  // Buffer to store strings without quotes
 %}
 
 /* Rule section */
 %%
-[ \t]+     {/* Ignore whitespace and tabs*/}
+[ \t]+     {/* Ignore whitespace and tabs */}
 "//".*    {/* Ignore single-line comments */}
-[*]       {return MULT;}
-[+]       {return PLUS;}
-[-]       {return MINUS;}
-[/]       {return DIV;}
-[=]       {return ASSIGN;}
-[<]       {return LESSER;}
-[>]       {return GREATER;}  
+[*]       { return MULT; }
+[+]       { return PLUS; }
+[-]       { return MINUS; }
+[/]       { return DIV; }
+[=]       { return ASSIGN; }
+[<]       { return LESSER; }
+[>]       { return GREATER; }  
 "<="      { return LE; }
 ">="      { return GE; }
 "=="      { return EQU; }
 "!="      { return NE; }
-[0-9]+    {yylval.int_val = atoi(yytext); return INTEGER;} 
+[0-9]+    { yylval.int_val = atoi(yytext); return INTEGER; }  // Recognize integers
 
 [a-zA-Z_][a-zA-Z0-9_]*   { yylval.strval = strdup(yytext); return ID; }  // Recognize identifiers (variable names)
 
 \"(.*?)\" {
-    strncpy(str, &(yytext[1]), strlen(yytext)-2);
-    str[strlen(yytext)-2] = (char) 0;
-    yylval.strval = strdup(str);
+    strncpy(str, &(yytext[1]), strlen(yytext)-2);  // Remove quotes from the string
+    str[strlen(yytext)-2] = '\0';  // Null-terminate the string
+    yylval.strval = strdup(str);  // Copy the string into yylval
     return STRING_LITERAL;
 }
-";" {return SEMICOLON;}
-\n  . {printf("Input Not Recognized: %s\n", yytext);} /* Error handling */
+
+";" { return SEMICOLON; }
+
+
+\n           { /* Do nothing, handle newlines */ }
+
+.            { printf("Input Not Recognized: %s\n", yytext); } // Print an error message for unrecognized input
+
 %%
 
 int yywrap(void) {
@@ -46,4 +52,3 @@ int main(){
     yyparse();  // Start parsing with yacc
     return 0;
 }
-
