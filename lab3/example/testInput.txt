@@ -1,0 +1,7 @@
+//20*(30 -67) / 4;
+
+print "Testing lexical analyzer";
+print newline;
+print 34 * 35 - 123;
+
+
