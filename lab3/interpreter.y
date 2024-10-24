@@ -49,7 +49,7 @@ program:
     stmt_list
     ;
 
-stmt_list :
+stmt_list:
     statement stmt_list
     | /* empty */
     ;
@@ -59,7 +59,7 @@ statement:
     | bye_statement
     | assign_statement
     | expr SEMICOLON  // Allow expressions to stand alone
-    | if_stmt          // Add if_stmt to handle if-else structures
+    | if_stmt  // Add if_stmt to handle if-else structures
     ;
 
 assign_statement:
@@ -75,8 +75,8 @@ print_statement:
     ;
 
 if_stmt:
-    IF expr THEN stmt_list ENDIF   { /* Process if-then block */ }
-    | IF expr THEN stmt_list ELSE stmt_list ENDIF { /* Process if-then-else block */ }
+    IF expr THEN stmt_list ENDIF
+    | IF expr THEN stmt_list ELSE stmt_list ENDIF
     ;
 
 expr:

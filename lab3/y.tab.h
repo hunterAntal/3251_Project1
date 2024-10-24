@@ -115,12 +115,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 29 "interpreter.y"
+#line 65 "interpreter.y"
 
     int int_val;  // For integer values
     char* strval; // For string literals and variable names
+    struct stmt* stmt_ptr;
+    struct stmt_list* stmt_list_ptr;
 
-#line 124 "y.tab.h"
+#line 126 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

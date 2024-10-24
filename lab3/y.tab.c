@@ -85,17 +85,53 @@ typedef struct {
 Symbol symbol_table[MAX_SYMBOLS];
 int symbol_count = 0;  // Current count of symbols
 
+// Structs for statements and statement lists
+typedef struct stmt {
+    enum { STMT_PRINT, STMT_ASSIGN, STMT_EXPR, STMT_IF, STMT_BYE } type;
+    union {
+        struct {
+            char* message;
+        } print_stmt;
+        struct {
+            char* var_name;
+            int value;
+        } assign_stmt;
+        int expr_value;
+        struct {
+            int condition;
+            struct stmt_list* then_stmts;
+            struct stmt_list* else_stmts;
+        } if_stmt;
+    } data;
+    struct stmt* next; // For linked list
+} stmt;
+
+typedef struct stmt_list {
+    struct stmt* head;
+    struct stmt* tail;
+} stmt_list;
+
 // Function prototypes for the symbol table
 int lookup_symbol(const char* name);
 void add_symbol(const char* name, int value);
 void update_symbol(const char* name, int value);
 int get_symbol_value(const char* name);
 
+// Function prototypes for statement handling
+stmt_list* create_stmt_list(stmt* statement);
+stmt_list* append_stmt(stmt* statement, stmt_list* list);
+stmt* create_print_stmt(char* message);
+stmt* create_assign_stmt(char* var_name, int value);
+stmt* create_expr_stmt(int value);
+stmt* create_if_stmt(int condition, stmt_list* then_stmts, stmt_list* else_stmts);
+stmt* create_bye_stmt();
+void execute_stmt_list(stmt_list* list);
+
 extern int yylex();
 extern int yyparse();
 extern void yyerror(const char *s);
 
-#line 99 "y.tab.c"
+#line 135 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -200,12 +236,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 29 "interpreter.y"
+#line 65 "interpreter.y"
 
     int int_val;  // For integer values
     char* strval; // For string literals and variable names
+    struct stmt* stmt_ptr;
+    struct stmt_list* stmt_list_ptr;
 
-#line 209 "y.tab.c"
+#line 247 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -595,7 +633,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  29
+#define YYNRULES  30
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  58
 
@@ -647,11 +685,12 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    49,    49,    53,    54,    58,    59,    60,    61,    62,
-      66,    72,    73,    74,    78,    79,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    95,    99
+       0,    88,    88,    94,    95,    96,   102,   103,   104,   105,
+     106,   110,   116,   119,   124,   130,   133,   139,   140,   141,
+     142,   143,   144,   145,   146,   147,   148,   149,   150,   151,
+     155
 };
 #endif
 
@@ -709,12 +748,12 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,     0,     0,     0,     0,    28,    27,     0,     2,     4,
-       7,     5,     9,     0,     6,    28,     0,    29,     0,     0,
-       0,     0,     0,     1,     3,     8,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     4,    11,    13,    12,
-      26,     0,    24,    20,    21,    22,    23,    25,    16,    17,
-      18,    19,     0,    10,     4,    14,     0,    15
+       3,     0,     0,     0,     0,    29,    28,     0,     2,     3,
+       8,     6,    10,     0,     7,    29,     0,    30,     0,     0,
+       0,     0,     0,     1,     5,     9,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     3,    12,    14,    13,
+      27,     0,    25,    21,    22,    23,    24,    26,    17,    18,
+      19,    20,     0,    11,     3,    15,     0,    16
 };
 
 /* YYPGOTO[NTERM-NUM].  */
@@ -779,17 +818,19 @@ static const yytype_int8 yystos[] =
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    27,    28,    29,    29,    30,    30,    30,    30,    30,
-      31,    32,    32,    32,    33,    33,    34,    34,    34,    34,
-      34,    34,    34,    34,    34,    34,    34,    34,    34,    35
+       0,    27,    28,    29,    29,    29,    30,    30,    30,    30,
+      30,    31,    32,    32,    32,    33,    33,    34,    34,    34,
+      34,    34,    34,    34,    34,    34,    34,    34,    34,    34,
+      35
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     0,     1,     1,     1,     2,     1,
-       4,     3,     3,     3,     5,     7,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     1,     1,     2
+       0,     2,     1,     0,     1,     2,     1,     1,     1,     2,
+       1,     4,     3,     3,     3,     5,     7,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     1,     1,
+       2
 };
 
 
@@ -1252,130 +1293,202 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 10: /* assign_statement: ID ASSIGN expr SEMICOLON  */
-#line 66 "interpreter.y"
-                             {
-        update_symbol((yyvsp[-3].strval), (yyvsp[-1].int_val));  // Add or update the variable in the symbol table
-    }
-#line 1261 "y.tab.c"
-    break;
-
-  case 11: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
-#line 72 "interpreter.y"
-                                   { printf("%s\n", (yyvsp[-1].strval)); }
-#line 1267 "y.tab.c"
-    break;
-
-  case 12: /* print_statement: PRINT expr SEMICOLON  */
-#line 73 "interpreter.y"
-                           { printf("%d\n", (yyvsp[-1].int_val)); }
-#line 1273 "y.tab.c"
-    break;
-
-  case 13: /* print_statement: PRINT NEWLINE SEMICOLON  */
-#line 74 "interpreter.y"
-                              { printf("\n"); }
-#line 1279 "y.tab.c"
-    break;
-
-  case 14: /* if_stmt: IF expr THEN stmt_list ENDIF  */
-#line 78 "interpreter.y"
-                                   { /* Process if-then block */ }
-#line 1285 "y.tab.c"
-    break;
-
-  case 15: /* if_stmt: IF expr THEN stmt_list ELSE stmt_list ENDIF  */
-#line 79 "interpreter.y"
-                                                  { /* Process if-then-else block */ }
-#line 1291 "y.tab.c"
-    break;
-
-  case 16: /* expr: expr PLUS expr  */
-#line 83 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
-#line 1297 "y.tab.c"
-    break;
-
-  case 17: /* expr: expr MINUS expr  */
-#line 84 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
-#line 1303 "y.tab.c"
-    break;
-
-  case 18: /* expr: expr MULT expr  */
-#line 85 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
-#line 1309 "y.tab.c"
-    break;
-
-  case 19: /* expr: expr DIV expr  */
-#line 86 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
-#line 1315 "y.tab.c"
-    break;
-
-  case 20: /* expr: expr LESSER expr  */
-#line 87 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1321 "y.tab.c"
-    break;
-
-  case 21: /* expr: expr GREATER expr  */
+  case 2: /* program: stmt_list  */
 #line 88 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1327 "y.tab.c"
+              {
+        execute_stmt_list((yyvsp[0].stmt_list_ptr));
+    }
+#line 1302 "y.tab.c"
     break;
 
-  case 22: /* expr: expr LE expr  */
-#line 89 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1333 "y.tab.c"
-    break;
-
-  case 23: /* expr: expr GE expr  */
-#line 90 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1339 "y.tab.c"
-    break;
-
-  case 24: /* expr: expr EQU expr  */
-#line 91 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1345 "y.tab.c"
-    break;
-
-  case 25: /* expr: expr NE expr  */
-#line 92 "interpreter.y"
-                         { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
-#line 1351 "y.tab.c"
-    break;
-
-  case 26: /* expr: LPEREN expr RPEREN  */
-#line 93 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[-1].int_val); }
-#line 1357 "y.tab.c"
-    break;
-
-  case 27: /* expr: INTEGER  */
+  case 3: /* stmt_list: %empty  */
 #line 94 "interpreter.y"
-                         { (yyval.int_val) = (yyvsp[0].int_val); }
-#line 1363 "y.tab.c"
+                { (yyval.stmt_list_ptr) = NULL; }
+#line 1308 "y.tab.c"
     break;
 
-  case 28: /* expr: ID  */
+  case 4: /* stmt_list: statement  */
 #line 95 "interpreter.y"
+                { (yyval.stmt_list_ptr) = create_stmt_list((yyvsp[0].stmt_ptr)); }
+#line 1314 "y.tab.c"
+    break;
+
+  case 5: /* stmt_list: statement stmt_list  */
+#line 96 "interpreter.y"
+                          {
+        (yyval.stmt_list_ptr) = append_stmt((yyvsp[-1].stmt_ptr), (yyvsp[0].stmt_list_ptr));
+    }
+#line 1322 "y.tab.c"
+    break;
+
+  case 6: /* statement: print_statement  */
+#line 102 "interpreter.y"
+                    { (yyval.stmt_ptr) = (yyvsp[0].stmt_ptr); }
+#line 1328 "y.tab.c"
+    break;
+
+  case 7: /* statement: bye_statement  */
+#line 103 "interpreter.y"
+                    { (yyval.stmt_ptr) = (yyvsp[0].stmt_ptr); }
+#line 1334 "y.tab.c"
+    break;
+
+  case 8: /* statement: assign_statement  */
+#line 104 "interpreter.y"
+                       { (yyval.stmt_ptr) = (yyvsp[0].stmt_ptr); }
+#line 1340 "y.tab.c"
+    break;
+
+  case 9: /* statement: expr SEMICOLON  */
+#line 105 "interpreter.y"
+                     { (yyval.stmt_ptr) = create_expr_stmt((yyvsp[-1].int_val)); }
+#line 1346 "y.tab.c"
+    break;
+
+  case 10: /* statement: if_stmt  */
+#line 106 "interpreter.y"
+              { (yyval.stmt_ptr) = (yyvsp[0].stmt_ptr); }
+#line 1352 "y.tab.c"
+    break;
+
+  case 11: /* assign_statement: ID ASSIGN expr SEMICOLON  */
+#line 110 "interpreter.y"
+                             {
+        (yyval.stmt_ptr) = create_assign_stmt((yyvsp[-3].strval), (yyvsp[-1].int_val));
+    }
+#line 1360 "y.tab.c"
+    break;
+
+  case 12: /* print_statement: PRINT STRING_LITERAL SEMICOLON  */
+#line 116 "interpreter.y"
+                                   {
+        (yyval.stmt_ptr) = create_print_stmt((yyvsp[-1].strval));
+    }
+#line 1368 "y.tab.c"
+    break;
+
+  case 13: /* print_statement: PRINT expr SEMICOLON  */
+#line 119 "interpreter.y"
+                           {
+        char buffer[32];
+        snprintf(buffer, sizeof(buffer), "%d", (yyvsp[-1].int_val));
+        (yyval.stmt_ptr) = create_print_stmt(strdup(buffer));
+    }
+#line 1378 "y.tab.c"
+    break;
+
+  case 14: /* print_statement: PRINT NEWLINE SEMICOLON  */
+#line 124 "interpreter.y"
+                              {
+        (yyval.stmt_ptr) = create_print_stmt(strdup("\n"));
+    }
+#line 1386 "y.tab.c"
+    break;
+
+  case 15: /* if_stmt: IF expr THEN stmt_list ENDIF  */
+#line 130 "interpreter.y"
+                                 {
+        (yyval.stmt_ptr) = create_if_stmt((yyvsp[-3].int_val), (yyvsp[-1].stmt_list_ptr), NULL);
+    }
+#line 1394 "y.tab.c"
+    break;
+
+  case 16: /* if_stmt: IF expr THEN stmt_list ELSE stmt_list ENDIF  */
+#line 133 "interpreter.y"
+                                                  {
+        (yyval.stmt_ptr) = create_if_stmt((yyvsp[-5].int_val), (yyvsp[-3].stmt_list_ptr), (yyvsp[-1].stmt_list_ptr));
+    }
+#line 1402 "y.tab.c"
+    break;
+
+  case 17: /* expr: expr PLUS expr  */
+#line 139 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) + (yyvsp[0].int_val); }
+#line 1408 "y.tab.c"
+    break;
+
+  case 18: /* expr: expr MINUS expr  */
+#line 140 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) - (yyvsp[0].int_val); }
+#line 1414 "y.tab.c"
+    break;
+
+  case 19: /* expr: expr MULT expr  */
+#line 141 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) * (yyvsp[0].int_val); }
+#line 1420 "y.tab.c"
+    break;
+
+  case 20: /* expr: expr DIV expr  */
+#line 142 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-2].int_val) / (yyvsp[0].int_val); }
+#line 1426 "y.tab.c"
+    break;
+
+  case 21: /* expr: expr LESSER expr  */
+#line 143 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) < (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1432 "y.tab.c"
+    break;
+
+  case 22: /* expr: expr GREATER expr  */
+#line 144 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) > (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1438 "y.tab.c"
+    break;
+
+  case 23: /* expr: expr LE expr  */
+#line 145 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) <= (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1444 "y.tab.c"
+    break;
+
+  case 24: /* expr: expr GE expr  */
+#line 146 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) >= (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1450 "y.tab.c"
+    break;
+
+  case 25: /* expr: expr EQU expr  */
+#line 147 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) == (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1456 "y.tab.c"
+    break;
+
+  case 26: /* expr: expr NE expr  */
+#line 148 "interpreter.y"
+                         { (yyval.int_val) = ((yyvsp[-2].int_val) != (yyvsp[0].int_val)) ? 1 : 0; }
+#line 1462 "y.tab.c"
+    break;
+
+  case 27: /* expr: LPEREN expr RPEREN  */
+#line 149 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[-1].int_val); }
+#line 1468 "y.tab.c"
+    break;
+
+  case 28: /* expr: INTEGER  */
+#line 150 "interpreter.y"
+                         { (yyval.int_val) = (yyvsp[0].int_val); }
+#line 1474 "y.tab.c"
+    break;
+
+  case 29: /* expr: ID  */
+#line 151 "interpreter.y"
          { (yyval.int_val) = get_symbol_value((yyvsp[0].strval)); }
-#line 1369 "y.tab.c"
+#line 1480 "y.tab.c"
     break;
 
-  case 29: /* bye_statement: BYE SEMICOLON  */
-#line 99 "interpreter.y"
-                  { printf("Good Bye Cruel World\n"); exit(0); }
-#line 1375 "y.tab.c"
+  case 30: /* bye_statement: BYE SEMICOLON  */
+#line 155 "interpreter.y"
+                  {
+        (yyval.stmt_ptr) = create_bye_stmt();
+    }
+#line 1488 "y.tab.c"
     break;
 
 
-#line 1379 "y.tab.c"
+#line 1492 "y.tab.c"
 
       default: break;
     }
@@ -1568,8 +1681,10 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 102 "interpreter.y"
+#line 160 "interpreter.y"
 
+
+/* C code section */
 
 // Function to search for a symbol by name
 int lookup_symbol(const char* name) {
@@ -1613,7 +1728,102 @@ int get_symbol_value(const char* name) {
     }
 }
 
+// Functions for statement handling
+stmt_list* create_stmt_list(stmt* statement) {
+    stmt_list* list = (stmt_list*)malloc(sizeof(stmt_list));
+    list->head = statement;
+    list->tail = statement;
+    return list;
+}
+
+stmt_list* append_stmt(stmt* statement, stmt_list* list) {
+    if (list == NULL) {
+        return create_stmt_list(statement);
+    }
+    list->tail->next = statement;
+    list->tail = statement;
+    return list;
+}
+
+stmt* create_print_stmt(char* message) {
+    stmt* new_stmt = (stmt*)malloc(sizeof(stmt));
+    new_stmt->type = STMT_PRINT;
+    new_stmt->data.print_stmt.message = message;
+    new_stmt->next = NULL;
+    return new_stmt;
+}
+
+stmt* create_assign_stmt(char* var_name, int value) {
+    stmt* new_stmt = (stmt*)malloc(sizeof(stmt));
+    new_stmt->type = STMT_ASSIGN;
+    new_stmt->data.assign_stmt.var_name = var_name;
+    new_stmt->data.assign_stmt.value = value;
+    new_stmt->next = NULL;
+    return new_stmt;
+}
+
+stmt* create_expr_stmt(int value) {
+    stmt* new_stmt = (stmt*)malloc(sizeof(stmt));
+    new_stmt->type = STMT_EXPR;
+    new_stmt->data.expr_value = value;
+    new_stmt->next = NULL;
+    return new_stmt;
+}
+
+stmt* create_if_stmt(int condition, stmt_list* then_stmts, stmt_list* else_stmts) {
+    stmt* new_stmt = (stmt*)malloc(sizeof(stmt));
+    new_stmt->type = STMT_IF;
+    new_stmt->data.if_stmt.condition = condition;
+    new_stmt->data.if_stmt.then_stmts = then_stmts;
+    new_stmt->data.if_stmt.else_stmts = else_stmts;
+    new_stmt->next = NULL;
+    return new_stmt;
+}
+
+stmt* create_bye_stmt() {
+    stmt* new_stmt = (stmt*)malloc(sizeof(stmt));
+    new_stmt->type = STMT_BYE;
+    new_stmt->next = NULL;
+    return new_stmt;
+}
+
+void execute_stmt_list(stmt_list* list) {
+    stmt* current = list->head;
+    while (current != NULL) {
+        switch (current->type) {
+            case STMT_PRINT:
+                printf("%s\n", current->data.print_stmt.message);
+                break;
+            case STMT_ASSIGN:
+                update_symbol(current->data.assign_stmt.var_name, current->data.assign_stmt.value);
+                break;
+            case STMT_EXPR:
+                // Handle expression statements if needed
+                break;
+            case STMT_IF:
+                if (current->data.if_stmt.condition) {
+                    execute_stmt_list(current->data.if_stmt.then_stmts);
+                } else if (current->data.if_stmt.else_stmts != NULL) {
+                    execute_stmt_list(current->data.if_stmt.else_stmts);
+                }
+                break;
+            case STMT_BYE:
+                printf("Good Bye Cruel World\n");
+                exit(0);
+                break;
+            default:
+                printf("Unknown statement type.\n");
+        }
+        current = current->next;
+    }
+}
+
 // Error handling function
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
+}
+
+int main() {
+    yyparse();  // Start parsing with yacc
+    return 0;
 }
