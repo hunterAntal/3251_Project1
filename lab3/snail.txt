@@ -26,6 +26,12 @@ k = i/j;
 print k; print newline;
 
 // If statement
+if (i > j) then
+    print "i is greater then j"; print newline;
+else
+    print "Your interpreter is not working"; print newline;
+endif
+
 if (3 < 4) then 
     print "3 is smaller then 4"; print newline;
 else 
