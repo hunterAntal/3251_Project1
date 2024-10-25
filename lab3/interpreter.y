@@ -2,16 +2,46 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "symbol.h"   // Include the symbol header
 
-    extern int yylex();
+    #define MAX_SYMBOLS 100  // Maximum number of symbols
+
+    typedef struct {
+        char* name;     // Variable name
+        int value;      // Variable value
+        int initialized; // Flag indicating if the variable has been initialized
+    } Symbol;
+
+    Symbol symbol_table[MAX_SYMBOLS];
+    int symbol_count = 0;
+
+    int find_symbol(const char* name) {
+        for (int i = 0; i < symbol_count; ++i) {
+            if (strcmp(symbol_table[i].name, name) == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int add_symbol(const char* name) {
+        if (symbol_count >= MAX_SYMBOLS) {
+            fprintf(stderr, "Error: Symbol table overflow\n");
+            exit(1);
+        }
+        symbol_table[symbol_count].name = strdup(name);
+        symbol_table[symbol_count].value = 0;
+        symbol_table[symbol_count].initialized = 0;
+        return symbol_count++;
+    }
+
     void yyerror(const char *s);
+    extern int yylex(void);
+
 %}
 
 %union {
     int int_val;       // For integer values
-    char* strval;      // For string literals
-    int sym_index;     // For symbol table indices
+    char* strval;      // For identifiers and string literals
 }
 
 %token IF BYE THEN ELSE ENDIF PRINT NEWLINE SEMICOLON
@@ -19,7 +49,7 @@
 %token PLUS MINUS MULT DIV LPEREN RPEREN ASSIGN
 %token <strval> STRING_LITERAL
 %token <int_val> INTEGER
-%token <sym_index> ID
+%token <strval> ID
 %type <int_val> expr
 
 %left PLUS MINUS
@@ -47,14 +77,20 @@ statement:
 
 assign_stmt:
     ID ASSIGN expr SEMICOLON {
-        symbol_table[$1].value = $3;
-        symbol_table[$1].initialized = 1;
+        int idx = find_symbol($1);
+        if (idx == -1) {
+            idx = add_symbol($1);
+        }
+        symbol_table[idx].value = $3;
+        symbol_table[idx].initialized = 1;
+        free($1); // Free the duplicated string
     }
     ;
 
 print_statement:
     PRINT STRING_LITERAL SEMICOLON {
         printf("%s", $2);
+        free($2); // Free the duplicated string
     }
     | PRINT expr SEMICOLON {
         printf("%d", $2);
@@ -87,15 +123,17 @@ expr:
     | expr EQU expr      { $$ = ($1 == $3) ? 1 : 0; }
     | expr NE expr       { $$ = ($1 != $3) ? 1 : 0; }
     | LPEREN expr RPEREN { $$ = $2; }
-    | MINUS expr %prec MINUS { $$ = -$2; }  // Unary minus
+    | MINUS expr %prec MINUS { $$ = -$2; }
     | INTEGER            { $$ = $1; }
     | ID {
-        if (symbol_table[$1].initialized) {
-            $$ = symbol_table[$1].value;
-        } else {
+        int idx = find_symbol($1);
+        if (idx == -1 || !symbol_table[idx].initialized) {
             yyerror("Error: Variable used before assignment");
             $$ = 0;
+        } else {
+            $$ = symbol_table[idx].value;
         }
+        free($1); // Free the duplicated string
     }
     ;
 

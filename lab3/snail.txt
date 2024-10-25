@@ -31,7 +31,6 @@ if (3 < 4) then
 else 
     print "Your interpreter is not working"; print newline;
 endif
-print "This works!!!!"; print newline;
 print "The sum of 4 + 5 is: "; print (4+5); print newline;
 
 // Exit the program
