@@ -1,0 +1,20 @@
+Start of Program
+2
+3
+2
+8
+4
+1
+1
+1
+1
+1
+1
+20
+2
+i is greater then j
+Your interpreter is not working
+3 is smaller then 4
+Your interpreter is not working
+The sum of 4 + 5 is: 9
+Good Bye Cruel World
